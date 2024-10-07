@@ -3,11 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { usePathname } from 'next/navigation'
-import { signOut, useSession } from 'next-auth/react'
 
 const NavBar = () => {
   const pathname = usePathname();
-  const {status} = useSession()
   return (
     <>
       {pathname == '/' && (
@@ -27,7 +25,7 @@ const NavBar = () => {
         </nav>
       )} 
       
-      {!pathname.startsWith('/client') && pathname !== '/' && status == "authenticated" && (
+      {!pathname.startsWith('/client') && pathname !== '/' && (
         <nav className="relative z-50 flex justify-between items-center bg-normal-green px-4 shadow-md h-max font-sans">
           <div className="flex items-center h-max text-cusBlue">
             <Link href="/client/home" className="mr-8 flex items-center">
