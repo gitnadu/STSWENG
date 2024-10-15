@@ -5,6 +5,9 @@ on:
     branches:
       -main
       #TODO: handle pushes from feature branch to sprint branch
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
