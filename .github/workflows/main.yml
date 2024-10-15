@@ -25,6 +25,5 @@ jobs:
           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
           PUBLIC_API_URL: ${{ secrets.PUBLIC_API_URL }}
         run:
-          echo "database_url is set to $database_url"
           npm run build
         #TODO: Run tests
