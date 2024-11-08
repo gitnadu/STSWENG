@@ -23,14 +23,14 @@ export default function DeleteCustomerModal({/*onOpenModel, onFetchCustomerData*
                         onClick={() => {
                             console.log("Cancel button pressed.");
                         }}
-                        className="btn text-lime-500 text-center bg-white border-[1px] rounded-md px-2 py-1 w-max self-end mr-2
+                        className="btn text-lime-500 text-center bg-white border-[2px] border-lime-500 rounded-md px-2 py-1 w-max self-end mr-2
                         hover:bg-yellow-700"/>
                         <input type="button" value="Delete" disabled={false}
                         data-test="confirm"
                         onClick={() => {
                             console.log("Confirm button pressed.");
                         }}
-                        className="btn text-white text-center bg-lime-500 border-[1px] rounded-md px-2 py-1 w-max self-end mr-2
+                        className="btn text-white text-center bg-lime-500 border-[1px] rounded-md px-2 py-1 w-max self-end mr-0
                         hover:bg-yellow-700"/>
                     </div>
                 </div>
