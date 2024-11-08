@@ -1,11 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 
-
-
-export default function DeleteCustomerModal({onOpenModel, onFetchCustomerData}) {
-    const handleDelete = async () => {
-
+export default function DeleteCustomerModal({customerID, onOpenModel, onFetchCustomerData}) {
+    const handleDelete = async (customerID) => {
+        try {
+            const response = await fetch(`/api/customers/${customerID}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            
+            console.log(`Customer with id: ${customerID} deleted.`)
+            onFetchCustomerData(true);
+        } catch (error) {
+            console.log(`Error in deleting a customer: ${error}`);
+        }
+        onOpenModel(false);
     };
 
     return (
@@ -35,8 +50,7 @@ export default function DeleteCustomerModal({onOpenModel, onFetchCustomerData}) 
                         data-test="confirm"
                         onClick={() => {
                             console.log("Confirm button pressed.");
-                            onOpenModel(false);
-                            onFetchCustomerData(true);
+                            handleDelete(customerID);
                         }}
                         className="btn text-white text-center bg-lime-500 border-[1px] rounded-md px-2 py-1 w-max self-end mr-0
                         hover:bg-yellow-700"/>

@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
 
-const ClientRow = ({ name, type, status, createdAt, /*onClickEdit*/ onClickDelete }) => {
+const ClientRow = ({ id, name, type, status, createdAt, /*onClickEdit*/ onClickDelete }) => {
   return (
-    <div className='flex items-center justify-between bg-dark-green-C rounded-lg shadow-md p-4 mt-6 hover:bg-opacity-90'>
+    <div data-id={id} className='flex items-center justify-between bg-dark-green-C rounded-lg shadow-md p-4 mt-6 hover:bg-opacity-90'>
       <div className='h-24 font-bold grid grid-cols-5 text-white text-xl w-full'>
         <div className='flex justify-center items-center italic'>{name}</div>
         <div className='flex justify-center items-center'>{type}</div>
