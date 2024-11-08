@@ -1,7 +1,47 @@
 import Customer from "../../../utils/models/customerModel";
 
-export async function PUT() {
+export async function PUT(request, { params }) {
+    try {
+        const customer_id = (await params).id;
 
+        const {
+            client_name,
+            contact_person,
+            email_address,
+            address,
+            services,
+            status,
+            type,
+            contact_number
+        } = await request.json();
+
+        const updated_customer = {
+            name: client_name,
+            type: type,
+            contact_person: contact_person,
+            contact_number: contact_number,
+            address: address,
+            email_address: email_address,
+            status: status,
+            services: services
+        }
+
+        //Updates the selected customer.
+        await Customer.updateOne({ _id: customer_id }, updated_customer);
+
+        //Returns a response.
+        console.log(`Customer with id ${customer_id} has been updated successfully.`);
+        return Response.json({ 
+            message: `Customer with id ${customer_id} has been updated successfully.`, 
+            status: 200 
+        });
+    } catch (error) {
+        console.log("Error: ", error);
+        return Response.json({ 
+            message: "Error occured while deleting a selected customer instance.", 
+            status: 500 
+        });
+    }
 }
 
 export async function DELETE(request, { params }) {
