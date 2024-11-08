@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function DeleteCustomerModal({/*onOpenModel, onFetchCustomerData*/}) {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
-            <div className="flex flex-col p-5 bg-white mt-[6.5%] w-[50%] flex-shrink-0 rounded-xl">
+            <div className="flex flex-col p-5 bg-white mt-[6.5%] w-[30%] h-[26%] flex-shrink-0 rounded-xl">
                 <div className="flex gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 -960 960 960"
                     className="w-6 h-6 text-dark-green-A fill-current mt-[0.3%]">
@@ -13,24 +13,26 @@ export default function DeleteCustomerModal({/*onOpenModel, onFetchCustomerData*
                     </svg>
                     <h2 className="text-dark-green-A text-[20px] font-bold mb-1 self-center">Confirm Delete?</h2>
                 </div>
-                <div>
-                    <p>Are you sure do you want to delete the selected customer?</p>
-                </div>
-                <div className="flex justify-end gap-1">
-                    <input type="button" value="Cancel" disabled={false}
-                    data-test="button_cancel"
-                    onClick={() => {
-                        console.log("Cancel button pressed.");
-                    }}
-                    className="btn text-lime-500 text-center bg-white border-[1px] rounded-md px-2 py-1 w-max self-end mr-2
-                    hover:bg-yellow-700"/>
-                    <input type="button" value="Delete" disabled={false}
-                    data-test="confirm"
-                    onClick={() => {
-                        console.log("Confirm button pressed.");
-                    }}
-                    className="btn text-white text-center bg-lime-500 border-[1px] rounded-md px-2 py-1 w-max self-end mr-2
-                    hover:bg-yellow-700"/>
+                <div className="flex flex-col px-4 gap-[10%]">
+                    <div className="h-[95%]">
+                        <p>Confirming will permanently delete this customer. This cannot be undone.</p>
+                    </div>
+                    <div className="flex justify-end gap-1">
+                        <input type="button" value="Cancel" disabled={false}
+                        data-test="button_cancel"
+                        onClick={() => {
+                            console.log("Cancel button pressed.");
+                        }}
+                        className="btn text-lime-500 text-center bg-white border-[1px] rounded-md px-2 py-1 w-max self-end mr-2
+                        hover:bg-yellow-700"/>
+                        <input type="button" value="Delete" disabled={false}
+                        data-test="confirm"
+                        onClick={() => {
+                            console.log("Confirm button pressed.");
+                        }}
+                        className="btn text-white text-center bg-lime-500 border-[1px] rounded-md px-2 py-1 w-max self-end mr-2
+                        hover:bg-yellow-700"/>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 'use client'
 import ClientRow from '@/app/components/admin/customerRow'
 import CustomerForm from '@/app/components/admin/customerForm'
+import DeleteCustomerModal from '@/app/components/admin/DeleteCustomerModal'
 import React, { useState, useEffect } from 'react';
 
 const Page = () => {
@@ -23,7 +24,8 @@ const Page = () => {
   const [fetching, setFetching] = useState(true);
   const [customers, setCustomers] = useState([]);
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const [customerModalOpen,       setcustomerModalOpen] =       useState(false);
+  const [deleteCustomerModalOpen, setDeleteCustomerModalOpen] = useState(true);
 
   const printFilters = () => {
     console.log(nameFilter);
@@ -74,7 +76,8 @@ const Page = () => {
 
   return (
     <div className='mx-16 mt-10 pb-6'>
-        {modalOpen && <CustomerForm onOpenModel={setModalOpen} onFetchCustomerData={setFetching} />}
+        {customerModalOpen && <CustomerForm onOpenModel={setcustomerModalOpen} onFetchCustomerData={setFetching} />}
+        {deleteCustomerModalOpen && <DeleteCustomerModal />}
         <div className='text-normal-green text-5xl italic font-bold'>Clients</div>
         <div className='flex items-center space-x-4 mt-5'>
         <svg width="22" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -156,7 +159,7 @@ const Page = () => {
         <div className='flex justify-end'>
             <button 
             className='btn border-none hover:bg-yellow-700  font-bold text-xl w-[201px] h-14 bg-light-green text-white mt-6 rounded-md'
-            onClick={() => setModalOpen(true)}>
+            onClick={() => setcustomerModalOpen(true)}>
                 + Add Client
             </button>
         </div>
