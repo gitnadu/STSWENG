@@ -25,7 +25,7 @@ const Page = () => {
   const [customers, setCustomers] = useState([]);
 
   const [customerModalOpen,       setcustomerModalOpen] =       useState(false);
-  const [deleteCustomerModalOpen, setDeleteCustomerModalOpen] = useState(true);
+  const [deleteCustomerModalOpen, setDeleteCustomerModalOpen] = useState(false);
 
   const printFilters = () => {
     console.log(nameFilter);
@@ -77,7 +77,7 @@ const Page = () => {
   return (
     <div className='mx-16 mt-10 pb-6'>
         {customerModalOpen && <CustomerForm onOpenModel={setcustomerModalOpen} onFetchCustomerData={setFetching} />}
-        {deleteCustomerModalOpen && <DeleteCustomerModal />}
+        {deleteCustomerModalOpen && <DeleteCustomerModal onOpenModel={setDeleteCustomerModalOpen} onFetchCustomerData={setFetching}/>}
         <div className='text-normal-green text-5xl italic font-bold'>Clients</div>
         <div className='flex items-center space-x-4 mt-5'>
         <svg width="22" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -145,13 +145,13 @@ const Page = () => {
           <div
             key={customer._id}
             className="cursor-pointer"
-            onClick={() => handleRowClick(customer._id)}
           >
             <ClientRow
               name={customer.name}
               type={customer.type}
               status={customer.status}
               createdAt={formatDate(customer.date)}
+              onClickDelete={() => setDeleteCustomerModalOpen(true)}
             />
           </div>
         ))}

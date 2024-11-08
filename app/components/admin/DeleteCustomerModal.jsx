@@ -2,7 +2,12 @@
 import { useState } from "react";
 
 
-export default function DeleteCustomerModal({/*onOpenModel, onFetchCustomerData*/}) {
+
+export default function DeleteCustomerModal({onOpenModel, onFetchCustomerData}) {
+    const handleDelete = async () => {
+
+    };
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
             <div className="flex flex-col p-5 bg-white mt-[6.5%] w-[30%] h-[26%] flex-shrink-0 rounded-xl">
@@ -22,6 +27,7 @@ export default function DeleteCustomerModal({/*onOpenModel, onFetchCustomerData*
                         data-test="button_cancel"
                         onClick={() => {
                             console.log("Cancel button pressed.");
+                            onOpenModel(false);
                         }}
                         className="btn text-lime-500 text-center bg-white border-[2px] border-lime-500 rounded-md px-2 py-1 w-max self-end mr-2
                         hover:bg-yellow-700"/>
@@ -29,6 +35,8 @@ export default function DeleteCustomerModal({/*onOpenModel, onFetchCustomerData*
                         data-test="confirm"
                         onClick={() => {
                             console.log("Confirm button pressed.");
+                            onOpenModel(false);
+                            onFetchCustomerData(true);
                         }}
                         className="btn text-white text-center bg-lime-500 border-[1px] rounded-md px-2 py-1 w-max self-end mr-0
                         hover:bg-yellow-700"/>
