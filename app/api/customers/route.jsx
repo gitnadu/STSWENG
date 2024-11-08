@@ -86,7 +86,3 @@ export async function POST(request) {
         });
     }
 }
-
-export async function PUT() {
-
-}
