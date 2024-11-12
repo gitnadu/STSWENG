@@ -2,21 +2,40 @@
 import { useState } from "react";
 import { TextInput, CheckboxInput, DropDownInput, SubmitButton } from "./formComponents"
 
-export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
+export default function CustomerForm({ onOpenModel, onFetchCustomerData, customerID, isForEdit }) {
     const statusOptions = ["Completed", "Ongoing", "Terminated", "Pending"];
     const typeOptions = ["Industrial", "Residential", "Commercial", "Service", "Retail", "Other"];
     const serviceOptions = ["Hygenic Pest Control", "Termite Control", "Rodent Control"];
 
     //States store inputs.
+    console.log(customerID)
+
+
+    const selected_customer = (isForEdit) ? {
+        name: "STSWENG Group 9",
+        type: "Other",
+        contact_person: "Adriel Fancubit",
+        contact_number: "09123456789",
+        address: "Taft Manila",
+        email_address: "stsweng_group_9@gmail.com",
+        status: "Ongoing",
+        date: "2024-09-02",
+        services: ["Hygenic Pest Control",]
+      } : null;
+
+      if (isForEdit) {
+        console.log(selected_customer)
+      }
+
     const [formData, setFormData] = useState({
-        client_name: "",
-        contact_person: "",
-        email_address: "",
-        address: "",
-        services: [],
-        status: "",
-        type: "",
-        contact_number: "",
+        client_name: (isForEdit) ? selected_customer.name : "",
+        contact_person: (isForEdit) ? selected_customer.contact_person : "",
+        email_address: (isForEdit) ? selected_customer.email_address : "",
+        address: (isForEdit) ? selected_customer.address : "",
+        services: (isForEdit) ? selected_customer.services : [],
+        status: (isForEdit) ? selected_customer.status : "",
+        type: (isForEdit) ? selected_customer.type : "",
+        contact_number: (isForEdit) ? selected_customer.contact_number : "",
     });
 
     const [errors, setErrors] = useState({
@@ -76,8 +95,8 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
         //console.log(new_services);
 
         setFormData({
-           ...formData,
-           services: services
+            ...formData,
+            services: services
         });
     };
 
@@ -105,7 +124,7 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
         const telephone_regex = /^(09|\+639)\d{9}$|^(02|\+6302)\d{8}$/;
         if (!telephone_regex.test(formData.contact_number)) {
             console.log(`contact_number: Please follow the following formats.`)
-            new_errors.contact_number = 
+            new_errors.contact_number =
             `Please follow one of the following formats:
             09XXXXXXXXX,
             +639XXXXXXXXX,
@@ -116,7 +135,7 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
 
         //Handles requirements:
         for (let data in formData) {
-            if (data !== "services" && formData[data] === "")  {
+            if (data !== "services" && formData[data] === "") {
                 console.log(`${data}: Please enter this field.`);
                 new_errors[data] = "Please enter this field.";
                 valid = false;
@@ -135,19 +154,19 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
         if (valid) {
             try {
                 console.log("Submitting customer form.");
-                
+
                 const response = await fetch(`/api/customers`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                      },
+                    },
                     body: JSON.stringify(formData)
                 });
 
                 if (!response.ok) {
                     throw new Error(`Response status: ${response.status}`);
                 }
-                
+
                 console.log("Submitting customer form successful.")
                 onOpenModel(false); //To change the state outside to disable the modal.
                 onFetchCustomerData(true);
@@ -165,18 +184,18 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 -960 960 960"
                     className="w-6 h-6 text-dark-green-A fill-current mt-[0.3%]"
                     onClick={() => onOpenModel(false)}>
-                        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
                     </svg>
                 </div>
                 <div className="flex flex-row justify-center px-4">
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 1 */}
-                        <TextInput name="client_name" label="Client Name" onChange={handleChange} 
+                        <TextInput name="client_name" label="Client Name" onChange={handleChange}
                         error_msg={errors.client_name} />
-                        <TextInput name="contact_person" label="Contact Person" onChange={handleChange} 
+                        <TextInput name="contact_person" label="Contact Person" onChange={handleChange}
                         error_msg={errors.contact_person} />
-                        <TextInput name="email_address" label="Email Address" onChange={handleChange} 
+                        <TextInput name="email_address" label="Email Address" onChange={handleChange}
                         error_msg={errors.email_address} />
-                        <TextInput name="address" label="Address" onChange={handleChange} 
+                        <TextInput name="address" label="Address" onChange={handleChange}
                         error_msg={errors.address} />
                         <CheckboxInput name="services" label="Services" options={serviceOptions} onChange={handleCheckboxChange}
                         error_msg={errors.services} />
@@ -185,9 +204,9 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
                         <div className="flex flex-col h-[90%]">
                             <DropDownInput name="status" label="Status" options={statusOptions} onChange={handleChange}
                             error_msg={errors.status} />
-                            <DropDownInput name="type" label="Type" options={typeOptions} onChange={handleChange} 
+                            <DropDownInput name="type" label="Type" options={typeOptions} onChange={handleChange}
                             error_msg={errors.type} />
-                            <TextInput name="contact_number" label="Contact Number" onChange={handleChange} 
+                            <TextInput name="contact_number" label="Contact Number" onChange={handleChange}
                             error_msg={errors.contact_number} /> {/* Regex: ^(09|\+639)\d{9}$|^(02|\+6302)\d{8}$*/}
                         </div>
                         <div className="flex flex-col flex-end justify-end">

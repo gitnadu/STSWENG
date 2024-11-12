@@ -78,7 +78,7 @@ const Page = () => {
 
   return (
     <div className='mx-16 mt-10 pb-6'>
-        {customerModalOpen && <CustomerForm onOpenModel={setCustomerModalOpen} onFetchCustomerData={setFetching} />}
+        {customerModalOpen && <CustomerForm onOpenModel={setCustomerModalOpen} customerID={selectedCustomerID} onFetchCustomerData={setFetching} isForEdit={isFormForEdit}/>}
         {deleteCustomerModalOpen && <DeleteCustomerModal customerID={selectedCustomerID} onOpenModel={setDeleteCustomerModalOpen} onFetchCustomerData={setFetching} />}
         <div className='text-normal-green text-5xl italic font-bold'>Clients</div>
         <div className='flex items-center space-x-4 mt-5'>
@@ -155,8 +155,10 @@ const Page = () => {
                   status={customer.status}
                   createdAt={formatDate(customer.date)}
                   onClickEdit={() => {
+                    setSelectedCustomerID(customer._id);
                     setCustomerModalOpen(true);
                     setIsFormForEdit(true);
+                    console.log(selectedCustomerID);
                   }}
                   onClickDelete={() => {
                     setSelectedCustomerID(customer._id);
@@ -169,7 +171,10 @@ const Page = () => {
         <div className='flex justify-end'>
             <button 
             className='btn border-none hover:bg-yellow-700  font-bold text-xl w-[201px] h-14 bg-light-green text-white mt-6 rounded-md'
-            onClick={() => setCustomerModalOpen(true)}>
+            onClick={() => {
+              setIsFormForEdit(false);
+              setCustomerModalOpen(true)
+            }}>
                 + Add Client
             </button>
         </div>
