@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-const ClientRow = ({ id, name, type, status, createdAt, /*onClickEdit*/ onClickDelete }) => {
+const ClientRow = ({ id, name, type, status, createdAt, onClickEdit, onClickDelete }) => {
   return (
     <div data-id={id} className='flex items-center justify-between bg-dark-green-C rounded-lg shadow-md p-4 mt-6 hover:bg-opacity-90'>
       <div className='h-24 font-bold grid grid-cols-5 text-white text-xl w-full'>
@@ -12,8 +12,8 @@ const ClientRow = ({ id, name, type, status, createdAt, /*onClickEdit*/ onClickD
         <div className='flex space-x-2'>
           <div className='flex gap-5 items-center'>
             <button 
-            className='btn border-none hover:bg-yellow-700 w-24 bg-light-green h-10 flex items-center justify-center rounded'>
-            {/*onClickEdit will be added when I focus on the edit function*/}
+            className='btn border-none hover:bg-yellow-700 w-24 bg-light-green h-10 flex items-center justify-center rounded'
+            onClick={onClickEdit}>
             <Image
                 className='mr-2'
                 src="/Customer/EditIcon.png"
