@@ -1,5 +1,28 @@
 import Customer from "../../../utils/models/customerModel";
 
+export async function GET(request, { params }) {
+    try {
+        const customer_id = (await params).id;
+
+        //Updates the selected customer.
+        const customer = await Customer.findById(customer_id);
+
+        //Returns a response.
+        console.log(`Customer with id ${customer_id} has been found successfully.`);
+        console.log(customer);
+        return Response.json({ 
+            customer,
+            status: 200 
+        });
+    } catch (error) {
+        console.log("Error: ", error);
+        return Response.json({ 
+            message: "Error occured while deleting a selected customer instance.", 
+            status: 500 
+        });
+    }
+}
+
 export async function PUT(request, { params }) {
     try {
         const customer_id = (await params).id;
