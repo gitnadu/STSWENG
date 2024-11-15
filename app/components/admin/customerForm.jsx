@@ -156,15 +156,29 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
 
         if (valid) {
             try {
-                console.log("Submitting customer form.");
+                let response = null;
 
-                const response = await fetch(`/api/customers`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formData)
-                });
+                if (isForEdit) { //For edit.
+                    console.log("Submitting customer form for edit.");
+
+                    response = await fetch(`/api/customers/${customerID}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                } else { //For creation.
+                    console.log("Submitting customer form for creation.");
+
+                    response = await fetch(`/api/customers`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                }
 
                 if (!response.ok) {
                     throw new Error(`Response status: ${response.status}`);

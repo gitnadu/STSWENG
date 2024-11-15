@@ -28,7 +28,7 @@ export async function PUT(request, { params }) {
         const customer_id = (await params).id;
 
         const {
-            client_name,
+            name,
             contact_person,
             email_address,
             address,
@@ -39,7 +39,7 @@ export async function PUT(request, { params }) {
         } = await request.json();
 
         const updated_customer = {
-            name: client_name,
+            name: name,
             type: type,
             contact_person: contact_person,
             contact_number: contact_number,
