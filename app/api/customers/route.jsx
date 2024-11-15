@@ -46,7 +46,7 @@ export async function GET(request) {
 export async function POST(request) {
     try {
         const {
-            client_name,
+            name,
             contact_person,
             email_address,
             address,
@@ -59,7 +59,7 @@ export async function POST(request) {
         const currentDate = new Date()
     
         const new_customer = new Customer({
-            name: client_name,
+            name: name,
             type: type,
             date: currentDate,
             contact_person: contact_person,
