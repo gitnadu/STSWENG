@@ -158,7 +158,6 @@ const Page = () => {
                     setSelectedCustomerID(customer._id);
                     setCustomerModalOpen(true);
                     setIsFormForEdit(true);
-                    console.log(selectedCustomerID);
                   }}
                   onClickDelete={() => {
                     setSelectedCustomerID(customer._id);
@@ -173,6 +172,7 @@ const Page = () => {
             className='btn border-none hover:bg-yellow-700  font-bold text-xl w-[201px] h-14 bg-light-green text-white mt-6 rounded-md'
             onClick={() => {
               setIsFormForEdit(false);
+              setSelectedCustomerID("");
               setCustomerModalOpen(true)
             }}>
                 + Add Client
