@@ -192,7 +192,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
                 </div>
                 <div className="flex flex-row justify-center px-4">
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 1 */}
-                        <TextInput name="client_name" label="Client Name" onChange={handleChange}
+                        <TextInput name="name" label="Client Name" onChange={handleChange}
                         error_msg={errors.name} />
                         <TextInput name="contact_person" label="Contact Person" onChange={handleChange}
                         error_msg={errors.contact_person} />
