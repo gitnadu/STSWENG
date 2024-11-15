@@ -8,7 +8,7 @@ function ErrorMessage({message, id}) {
     );
 }
 
-export function TextInput({name, label, onChange, error_msg}) {
+export function TextInput({name, label, value, onChange, error_msg}) {
     const error = false;
     const error_style = "border-red-600 bg-red-100";
 
@@ -20,6 +20,7 @@ export function TextInput({name, label, onChange, error_msg}) {
             </label><br />
             <input type="text" id={name} name={name} 
             data-test={`input_${name}`}
+            value={value}
             onChange={onChange}
             className={`border-[1px] ${error_msg && error_style} border-dark-green rounded-md w-[95%]`}
             />
@@ -69,7 +70,7 @@ export function TelNumInput({name, label, regex, onChange}) {
     );
 }
 
-export function CheckboxInput({name, label, options, onChange, error_msg}) {
+export function CheckboxInput({name, label, options, values, onChange, error_msg}) {
     const error = false;
     const error_style = "border-red-600 bg-red-100 hover:bg-red-50";
 
@@ -86,6 +87,7 @@ export function CheckboxInput({name, label, options, onChange, error_msg}) {
             name={name} // Consistent name for form submission
             value={option}
             data-test={`input_${name}_${option.replaceAll(" ", "_").toLowerCase()}`}
+            checked={values.includes(option)}
             /*className="mx-2 my-1 
             peer relative appearance-none 
             w-5 h-5 border 
@@ -128,12 +130,12 @@ export function CheckboxInput({name, label, options, onChange, error_msg}) {
     );
 }
 
-export function DropDownInput({name, label, options, onChange, error_msg}) {
+export function DropDownInput({name, label, options, value, onChange, error_msg}) {
     const error = false;
     const error_style = "border-red-600 bg-red-100";
 
     const optionList = options.map((option, index) =>
-        <option key={index + 1} value={option}>{option}</option>
+        <option key={index + 1} value={option} selected={option == value}>{option}</option>
     );
 
     return (
@@ -147,7 +149,7 @@ export function DropDownInput({name, label, options, onChange, error_msg}) {
             data-test={`input_${name}`}
             onChange={onChange}
             className={`border-[1px] ${error_msg && error_style} border-dark-green rounded-md w-[50%]`}>
-                 <option disabled selected value>Select {name}</option>
+                 <option disabled selected={!value} value>Select {name}</option>
                 {optionList}
             </select>
             {error_msg &&

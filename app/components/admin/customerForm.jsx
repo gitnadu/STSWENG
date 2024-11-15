@@ -193,23 +193,31 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
                 <div className="flex flex-row justify-center px-4">
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 1 */}
                         <TextInput name="name" label="Client Name" onChange={handleChange}
+                        value={formData.name}
                         error_msg={errors.name} />
                         <TextInput name="contact_person" label="Contact Person" onChange={handleChange}
+                        value={formData.contact_person}
                         error_msg={errors.contact_person} />
                         <TextInput name="email_address" label="Email Address" onChange={handleChange}
+                        value={formData.email_address}
                         error_msg={errors.email_address} />
                         <TextInput name="address" label="Address" onChange={handleChange}
+                        value={formData.address}
                         error_msg={errors.address} />
                         <CheckboxInput name="services" label="Services" options={serviceOptions} onChange={handleCheckboxChange}
+                        values={formData.services}
                         error_msg={errors.services} />
                     </div>
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 2 */}
                         <div className="flex flex-col h-[90%]">
                             <DropDownInput name="status" label="Status" options={statusOptions} onChange={handleChange}
+                            value={formData.status}
                             error_msg={errors.status} />
                             <DropDownInput name="type" label="Type" options={typeOptions} onChange={handleChange}
+                            value={formData.status}
                             error_msg={errors.type} />
                             <TextInput name="contact_number" label="Contact Number" onChange={handleChange}
+                            value={formData.contact_number}
                             error_msg={errors.contact_number} /> {/* Regex: ^(09|\+639)\d{9}$|^(02|\+6302)\d{8}$*/}
                         </div>
                         <div className="flex flex-col flex-end justify-end">
