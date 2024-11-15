@@ -228,7 +228,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
                             value={formData.status}
                             error_msg={errors.status} />
                             <DropDownInput name="type" label="Type" options={typeOptions} onChange={handleChange}
-                            value={formData.status}
+                            value={formData.type}
                             error_msg={errors.type} />
                             <TextInput name="contact_number" label="Contact Number" onChange={handleChange}
                             value={formData.contact_number}
