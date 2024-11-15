@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextInput, CheckboxInput, DropDownInput, SubmitButton } from "./formComponents"
 
 export default function CustomerForm({ onOpenModel, onFetchCustomerData, customerID, isForEdit }) {
@@ -8,34 +8,17 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     const serviceOptions = ["Hygenic Pest Control", "Termite Control", "Rodent Control"];
 
     //States store inputs.
-    console.log(customerID)
-
-
-    const selected_customer = (isForEdit) ? {
-        name: "STSWENG Group 9",
-        type: "Other",
-        contact_person: "Adriel Fancubit",
-        contact_number: "09123456789",
-        address: "Taft Manila",
-        email_address: "stsweng_group_9@gmail.com",
-        status: "Ongoing",
-        date: "2024-09-02",
-        services: ["Hygenic Pest Control",]
-      } : null;
-
-      if (isForEdit) {
-        console.log(selected_customer)
-      }
+    console.log(customerID);
 
     const [formData, setFormData] = useState({
-        client_name: (isForEdit) ? selected_customer.name : "",
-        contact_person: (isForEdit) ? selected_customer.contact_person : "",
-        email_address: (isForEdit) ? selected_customer.email_address : "",
-        address: (isForEdit) ? selected_customer.address : "",
-        services: (isForEdit) ? selected_customer.services : [],
-        status: (isForEdit) ? selected_customer.status : "",
-        type: (isForEdit) ? selected_customer.type : "",
-        contact_number: (isForEdit) ? selected_customer.contact_number : "",
+        client_name: "",
+        contact_person: "",
+        email_address: "",
+        address: "",
+        services: [],
+        status: "",
+        type: "",
+        contact_number: "",
     });
 
     const [errors, setErrors] = useState({
@@ -48,6 +31,27 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
         type: "",
         contact_number: "",
     })
+
+    useEffect(() => {
+        if (isForEdit) {
+          console.log(`Fetching customer with id ${customerID}...`);
+    
+          fetch(`/api/customers/${customerID}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const customer = data.customer;
+            setFormData(prevState => ({
+                ...prevState,
+                client_name: customer.name,
+                ...customer
+            }));
+          })
+          .catch((error) => console.error('Error while fetching a customer:', error));
+        } 
+    }, [isForEdit, customerID]);
+
+    console.log("Initial formData:")
+    console.log(formData);
 
     const printInputs = () => {
         console.log(formData.client_name);
@@ -190,6 +194,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
                 <div className="flex flex-row justify-center px-4">
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 1 */}
                         <TextInput name="client_name" label="Client Name" onChange={handleChange}
+                        value={formData.client_name}
                         error_msg={errors.client_name} />
                         <TextInput name="contact_person" label="Contact Person" onChange={handleChange}
                         error_msg={errors.contact_person} />
