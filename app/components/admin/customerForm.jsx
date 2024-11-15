@@ -238,7 +238,8 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
                             <SubmitButton onClick={() => {
                                 printInputs();
                                 handleSubmit();
-                            }} />
+                            }} 
+                            isForEdit={isForEdit}/>
                         </div>
                     </div>
                 </div>

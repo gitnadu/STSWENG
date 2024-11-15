@@ -158,9 +158,9 @@ export function DropDownInput({name, label, options, value, onChange, error_msg}
     );
 }
 
-export function SubmitButton({ onClick }) {
+export function SubmitButton({ onClick, isForEdit }) {
     return (
-        <input type="submit" value="+ Add Client" disabled={false}
+        <input type="submit" value={isForEdit ? "Edit Client" : "+ Add Client"} disabled={false}
         data-test="submit_button" 
         onClick={onClick}
         className="btn text-white text-center bg-lime-500 border-[1px] rounded-md px-2 py-1 w-max self-end mr-2
