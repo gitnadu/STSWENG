@@ -11,7 +11,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     console.log(customerID);
 
     const [formData, setFormData] = useState({
-        client_name: "",
+        name: "",
         contact_person: "",
         email_address: "",
         address: "",
@@ -22,7 +22,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     });
 
     const [errors, setErrors] = useState({
-        client_name: "",
+        name: "",
         contact_person: "",
         email_address: "",
         address: "",
@@ -42,7 +42,6 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
             const customer = data.customer;
             setFormData(prevState => ({
                 ...prevState,
-                client_name: customer.name,
                 ...customer
             }));
           })
@@ -54,7 +53,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     console.log(formData);
 
     const printInputs = () => {
-        console.log(formData.client_name);
+        console.log(formData.name);
         console.log(formData.contact_person);
         console.log(formData.email_address);
         console.log(formData.address);
@@ -65,7 +64,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     };
 
     const printErrorMessages = () => {
-        console.log(errors.client_name);
+        console.log(errors.name);
         console.log(errors.contact_person);
         console.log(errors.email_address);
         console.log(errors.address);
@@ -106,7 +105,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
 
     const handleSubmit = async () => {
         const new_errors = {
-            client_name: "",
+            name: "",
             contact_person: "",
             email_address: "",
             address: "",
@@ -194,8 +193,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
                 <div className="flex flex-row justify-center px-4">
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 1 */}
                         <TextInput name="client_name" label="Client Name" onChange={handleChange}
-                        value={formData.client_name}
-                        error_msg={errors.client_name} />
+                        error_msg={errors.name} />
                         <TextInput name="contact_person" label="Contact Person" onChange={handleChange}
                         error_msg={errors.contact_person} />
                         <TextInput name="email_address" label="Email Address" onChange={handleChange}
