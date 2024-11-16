@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
 
-const serviedAreaModel = new Schema({
+const servicedAreaSchema = new Schema({
   sa_id: {
     type: Schema.Types.ObjectId,
     ref: "ServiceAcknowledgment",
@@ -15,5 +15,6 @@ const serviedAreaModel = new Schema({
 
 const ServicedArea =
   models.ServicedArea ||
-  model("ServicedArea", serviedAreaModel, "serviced_areas");
+  model("ServicedArea", servicedAreaSchema, "serviced_areas");
+
 export default ServicedArea;
