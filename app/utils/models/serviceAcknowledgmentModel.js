@@ -1,7 +1,7 @@
 import { Schema, model, models } from "mongoose";
 
 const serviceAckModel = new Schema({
-  service: {
+  service_id: {
     type: Schema.Types.ObjectId,
     ref: "Service",
     required: true,
