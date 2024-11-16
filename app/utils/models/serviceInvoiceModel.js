@@ -1,7 +1,7 @@
 import { Schema, model, models } from "mongoose";
 
 const serviceInvoiceModel = new Schema({
-  service_id: {
+  service: {
     type: Schema.Types.ObjectId,
     ref: "Service",
     required: true,
