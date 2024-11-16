@@ -36,7 +36,7 @@ const Accordion = ({ title, children, isOpen, onClick, isAddButtonVisible }) => 
     </div>
   );
 };
-const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, setLoading }) => {
+const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, setLoading, setFetching }) => {
   const [openSection, setOpenSection] = useState('customerInformation');
   const [isEditingCustomer, setIsEditingCustomer] = useState(false);
   const [isEditingProposal, setIsEditingProposal] = useState(false);
@@ -632,7 +632,6 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   };
 
   const updateCustomer = async () => {
-    setLoading(true);
     try {
       const response = await fetch('/api/customers', {
         method: 'PUT',
@@ -647,14 +646,13 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       const result = await response.json();
       if (response.ok) {
         setIsEditingCustomer(false);
-        window.location.reload();
+        setFetching(true)
       } else {
         console.error('Error updating customer:', result.message);
       }
     } catch (error) {
       console.error('Error during customer update:', error.message);
     } finally {
-      setLoading(false);
     }
   };
 
@@ -1948,6 +1946,7 @@ const Page = () => {
           refetchTrigger={refetchTrigger} 
           loading = {loading}
           setLoading = {setLoading}
+          setFetching={setFetching}
         />
       </div>
       
