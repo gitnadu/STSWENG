@@ -72,8 +72,10 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     type: '',
     status: '',
     contact_number: '',
+    services: []
   });
 
+  console.log(customerFields.services)
   const [proposalFields, setProposalFields] = useState({
     product: '',
     frequency: '',
@@ -422,6 +424,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
           type: customerData.type || '',
           status: customerData.status || '',
           contact_number: customerData.contact_number || '',
+          services: customerData.services || [] 
         });
       } catch (error) {
         console.error("An error occurred:", error);
@@ -642,8 +645,8 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       });
       const result = await response.json();
       if (response.ok) {
-        console.log('Customer updated successfully:', result);
         setIsEditingCustomer(false);
+        window.location.reload();
       } else {
         console.error('Error updating customer:', result.message);
       }
@@ -923,23 +926,28 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                   </div>
   
                   <div className="mb-4">
-                    <label className="block text-md font-semibold text-dark-green pb-2">Type of Service</label>
-                    {isEditingCustomer ? 
-                      <select
-                        name="type"
-                        value={customerFields.type}
-                        onChange={(e) => handleInputChange(e, 'customerInformation')}
-                        className="w-full border border-normal-green text-normal-green bg-white py-2 px-3 rounded-md hover:border-green-700 hover:shadow focus:border-green-700"
-                      >
-                        <option disabled value="">Type:</option>
-                        <option key={1} value="">
-                          None
+                  <label className="block text-md font-semibold text-dark-green pb-2">Type of Service</label>
+                  {isEditingCustomer ? (
+                    <select
+                      name="services"
+                      multiple 
+                      value={customerFields.services}
+                      onChange={(e) => {
+                        const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+                        setCustomerFields(prevState => ({ ...prevState, services: selectedOptions }));
+                      }}
+                      className="w-full border border-normal-green text-normal-green bg-white py-2 px-3 rounded-md hover:border-green-700 hover:shadow focus:border-green-700"
+                    >
+                      {servicesList.map((service) => (
+                        <option key={service.id} value={service.label}>
+                          {service.label}
                         </option>
-                        {typeOptionList}
-                      </select> : 
-                      <div>{customerFields.type}</div>
-                    }
-                  </div>
+                      ))}
+                    </select>
+                  ) : (
+                    <div>{customerFields.services.join(', ')}</div> 
+                  )}
+                </div>
                 </div>
   
                 <div className="basis-4/12">
