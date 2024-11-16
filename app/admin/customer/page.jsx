@@ -43,7 +43,8 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   const [isEditingContract, setIsEditingContract] = useState(false);
   const [isEditingInvoice, setIsEditingInvoice] = useState(false);
   const [isEditingAcknowledgement, setIsEditingAcknowledgement] = useState(false);
-  
+  const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, section: null });
+
   const servicesList = [
     { id: 'Hygienic Pest Control', label: 'Hygienic Pest Control' },
     { id: 'Termite Control', label: 'Termite Control' },
@@ -124,17 +125,17 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     }
   };
 
-  const deleteProposalForCustomer = async (customerId) => {
+  const deleteProposalForCustomer = async () => {
     setLoading(true)
     try {
-      const response = await fetch(`/api/customers/proposals/delete?customer_id=${customerId}`, {
+      const response = await fetch(`/api/customers/proposals/delete?customer_id=${customerData._id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
       });
       const data = await response.json();
       if (response.ok) {
         setOpenSection('customerInformation');
-        fetchProposalForCustomer(customerId)
+        fetchProposalForCustomer(customerData._id)
         console.log('Proposals deleted successfully:', data);
       } else {
         console.error('Failed to delete proposals:', data.message);
@@ -170,17 +171,17 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     }
   };
 
-  const deleteContractForCustomer = async (customerId) => {
+  const deleteContractForCustomer = async () => {
     setLoading(true)
     try {
-      const response = await fetch(`/api/customers/contracts/delete?customer_id=${customerId}`, {
+      const response = await fetch(`/api/customers/contracts/delete?customer_id=${customerData._id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
       });
       const data = await response.json();
       if (response.ok) {
         setOpenSection('customerInformation');
-        fetchContractforCustomer(customerId)
+        fetchContractforCustomer(customerData._id)
         console.log('Contract deleted successfully:', data);
       } else {
         console.error('Failed to delete Contract:', data.message);
@@ -855,8 +856,43 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   }
   return (
     <div>
+```jsx
+{
+  confirmDelete.isOpen && (
+    <dialog open className="fixed inset-0 z-[1050] flex items-center justify-center">
+      <div className="fixed inset-0 bg-black opacity-50 z-[1040]"></div>
+      <div className="bg-white rounded-lg shadow-lg z-[1050] p-5">
+        <h3 className="text-center mb-4 text-xl font-bold text-black">Confirm Delete</h3>
+        <p className="text-center mb-6 text-black">
+          Are you sure you want to delete this {confirmDelete.section}?
+        </p>
+        <div className="flex items-center justify-center space-x-4">
+          <button
+            onClick={() => setConfirmDelete({ isOpen: false, section: null })}
+            className="bg-gray-300 text-black font-semibold py-2 px-4 rounded hover:bg-gray-400"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              setConfirmDelete({ isOpen: false, section: null });
+              if (confirmDelete.section === "proposal") deleteProposalForCustomer();
+              if (confirmDelete.section === "contracts") deleteContractForCustomer();
+              if (confirmDelete.section === "invoice") deleteInvoicesForCustomer();
+              if (confirmDelete.section === "acknowledgment") deleteAcknowledgmentsForCustomer();
+            }}
+            className="bg-light-green text-white font-semibold py-2 px-4 rounded hover:bg-dark-green-C"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </dialog>
+  )
+}
+
     {(loading) ? (
-      <dialog className="modal w-screen" open>
+      <dialog className="modal w-screen z-1" open>
       <div className="modal-overlay fixed inset-0 bg-black opacity-50"></div>
       <div className="modal-content flex items-center justify-center min-h-screen">
         <div className="modal-box w-[1050px] p-6 bg-white rounded-lg shadow-lg relative z-10">
@@ -868,7 +904,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       </div>
       </dialog>
     ) : (
-      isOpen && (
+      isOpen && (        
         <dialog className="modal w-screen" open>
         <div className="modal-overlay fixed inset-0 bg-black opacity-50"></div>
         <div className="modal-content flex items-center justify-center min-h-screen">
@@ -1134,7 +1170,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                       height={22}
                     />
                   </button>
-                  <button onClick={() => deleteProposalForCustomer()} className="bg-light-green text-white font-semibold py-1 px-5 ml-2 rounded hover:bg-dark-green-C">
+                  <button onClick={() => setConfirmDelete({ isOpen: true, section: 'proposal' })} className="bg-light-green text-white font-semibold py-1 px-5 ml-2 rounded hover:bg-dark-green-C">
                     <Image
                       className='w-full h-[24px]'
                       src="/Customer/DeleteIcon.png"
@@ -1237,7 +1273,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                 <label className="block text-md font-semibold text-dark-green pb-2">Quotation Total</label>
                 {isEditingContract ? (
                   <input
-                    type="text"
+                    type="number"
                     name="quotation_total"
                     value={contractFields.quotation_total}
                     onChange={(e) => handleInputChange(e, 'contract')}
@@ -1285,7 +1321,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                         height={22}
                       />
                     </button>
-                    <button onClick={() => deleteContractForCustomer()} className="bg-light-green text-white font-semibold py-1 px-5 ml-2 rounded hover:bg-dark-green-C">
+                    <button onClick={() => setConfirmDelete({ isOpen: true, section: 'contracts' })} className="bg-light-green text-white font-semibold py-1 px-5 ml-2 rounded hover:bg-dark-green-C">
                       <Image
                         className='w-full h-[24px]'
                         src="/Customer/DeleteIcon.png"
@@ -1413,7 +1449,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
           <div className="mb-4">
             <label className="block text-md font-semibold text-dark-green pb-2">Unit</label>
             <input
-              type="text"
+              type="number"
               name="unit"
               className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
             />
@@ -1595,7 +1631,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
             height={22}
           />
           </button>
-          <button onClick={() => deleteInvoicesForCustomer()} className="bg-light-green text-white font-semibold py-1 px-5 ml-2 rounded hover:bg-dark-green-C">
+          <button onClick={() => setConfirmDelete({ isOpen: true, section: 'invoice' })} className="bg-light-green text-white font-semibold py-1 px-5 ml-2 rounded hover:bg-dark-green-C">
           <Image
             className='w-full h-[24px]'
             src="/Customer/DeleteIcon.png"
@@ -1846,7 +1882,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
             height={22}
           />
         </button>
-        <button onClick={() => deleteAcknowledgmentsForCustomer()} className="bg-light-green text-white font-semibold py-1 px-5 ml-2 rounded hover:bg-dark-green-C">
+        <button onClick={() => setConfirmDelete({ isOpen: true, section: 'acknowledgment' })} className="bg-light-green text-white font-semibold py-1 px-5 ml-2 rounded hover:bg-dark-green-C">
           <Image
             className='w-full h-[24px]'
             src="/Customer/DeleteIcon.png"
