@@ -1,7 +1,7 @@
 import { Schema, model, models } from "mongoose";
 
 const proposalSchema = new Schema({
-  customer_id: {
+  customer: {
     type: Schema.Types.ObjectId,
     ref: "Customer",
     required: true,
@@ -9,7 +9,7 @@ const proposalSchema = new Schema({
   product: { type: String, required: true, enum: ["Exterra Baiting System"] },
   quotation_total: { type: Number, required: true },
   frequency: { type: String, required: true },
-  file: { type: String, required: false, default: null }, //type not specified for now.
+  //file: { type: String, required: false, default: null }, //type not specified for now.
 });
 
 const Proposal =
