@@ -19,5 +19,5 @@ const contractModel = new Schema({
 });
 
 const Contract =
-  models.Proposal || model("Contract", contractModel, "contracts");
+  models.Contract || model("Contract", contractModel, "contracts");
 export default Contract;
