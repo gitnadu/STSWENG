@@ -44,13 +44,15 @@ export async function POST(request) {
         console.log("New service invoice instance saved.");
 
         return Response.json({ 
-            message: "Creating a new service invoice instance successful.", 
+            message: "Creating a new service invoice instance successful.",
+        }, {
             status: 201 
         });
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
-            message: "Error occured while creating a new service inovice instance.", 
+            message: "Error occured while creating a new service inovice instance.",
+        }, {
             status: 500 
         });
     }

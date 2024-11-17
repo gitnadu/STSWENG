@@ -44,7 +44,8 @@ export async function POST(request) { //Creates multiple instances of article.
         console.log("New article instances saved.");
 
         return Response.json({ 
-            message: "Creating a new article instances successful.", 
+            message: "Creating a new article instances successful.",
+        }, {
             status: 201 
         });
     } catch (error) {

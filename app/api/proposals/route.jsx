@@ -42,13 +42,15 @@ export async function POST(request) {
         console.log("New proposal instance saved.");
 
         return Response.json({ 
-            message: "Creating a new proposal instance successful.", 
+            message: "Creating a new proposal instance successful.",
+        }, {
             status: 201 
         });
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
-            message: "Error occured while creating a new proposal instance.", 
+            message: "Error occured while creating a new proposal instance."
+        }, {
             status: 500 
         });
     }

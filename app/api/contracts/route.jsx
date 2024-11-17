@@ -50,12 +50,14 @@ export async function POST(request) {
 
         return Response.json({ 
             message: "Creating a new contract instance successful.", 
+        }, {
             status: 201 
         });
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
-            message: "Error occured while creating a new contract instance.", 
+            message: "Error occured while creating a new contract instance.",
+        }, {
             status: 500 
         });
     }

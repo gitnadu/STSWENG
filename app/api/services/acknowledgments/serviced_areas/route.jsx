@@ -44,7 +44,8 @@ export async function POST(request) { //Creates multiple instances of article.
         console.log("New serviced area instances saved.");
 
         return Response.json({ 
-            message: "Creating new serviced area instances successful.", 
+            message: "Creating new serviced area instances successful.",
+        }, {
             status: 201 
         });
     } catch (error) {

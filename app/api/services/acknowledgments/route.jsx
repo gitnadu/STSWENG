@@ -39,6 +39,7 @@ export async function POST(request) {
 
         return Response.json({ 
             message: "Creating a new service acknowledgment instance successful.", 
+        }, {
             status: 201 
         });
     } catch (error) {

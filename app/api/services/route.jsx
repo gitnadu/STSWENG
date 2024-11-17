@@ -40,13 +40,15 @@ export async function POST(request) {
         console.log("New service instance saved.");
 
         return Response.json({ 
-            message: "Creating a new service instance successful.", 
+            message: "Creating a new service instance successful.",
+        }, {
             status: 201 
         });
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
-            message: "Error occured while creating a new service instance.", 
+            message: "Error occured while creating a new service instance.",
+        }, {
             status: 500 
         });
     }
