@@ -31,3 +31,19 @@ jobs:
         run: npm install
       - name: Build the application
         run: npm run build
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
+      - name: Cypress run tests 1
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm run start
+      - name: Cypress run tests 2
+        uses: cypress-io/github-action@v6
+        with:
+          component: true
