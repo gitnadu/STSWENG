@@ -28,7 +28,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
       - name: Install dependencies
-        run: npm install
+        run: npm ci
         # Test each secret individually
       - name: Check DATABASE_URL
         run: |
