@@ -29,6 +29,39 @@ const Page = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
 
+  //Contract formData
+  const [proposalFormData, setProposalFormData] = useState({
+    customer_id: "",
+    product: "",
+    quotation_total: 0,
+    frequency: "",
+  });
+  
+  const [contractFormData, setContractFormData] = useState({
+    customer_id: "",
+    services: [],
+    start_date: null,
+    end_date: null,
+    quotation_total: 0,
+    frequency: "",
+  });
+
+  const [serviceInvoiceFormData, setServiceInvoiceFormData] = useState({
+    service_id: "",
+    tin: 0,
+    terms: "",
+    pwd_id_no: "",
+    business_style: ""
+  });
+
+  const [serviceAckFormData, setServiceAckFormData] = useState({
+    service_id: "",
+    tin: 0,
+    terms: "",
+    pw_id_no: "",
+    business_style: ""
+  });
+
   const typeOptionList = typeOptions.map((type, index) =>
     <option key={index + 2} value={type}>{type}</option>
   );
