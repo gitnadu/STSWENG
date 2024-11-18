@@ -8,7 +8,7 @@ export async function GET() {
         const results = await ServiceInvoice.find().exec();
         console.log(results)
 
-        return Response.json({ results, status: 200 });
+        return Response.json({ results }, { status: 200 });
     } catch (error) {
         console.error("Error:", error);
         return Response.json({ message: "An error occurred while getting service invoices." }, { status: 500 });
@@ -22,7 +22,7 @@ export async function POST(request) {
             tin,
             terms,
             pwd_id_no,
-            business_type,
+            business_style,
         } = await request.json();
 
         const service = await Service.findById(service_id);
@@ -32,11 +32,11 @@ export async function POST(request) {
         }
 
         const new_service_invoice = new ServiceInvoice({
-            service: customer_id,
+            service_id: service_id,
             tin: tin,
             terms: terms,
             pwd_id_no: pwd_id_no,
-            business_type: business_type,
+            business_style: business_style,
         });
     
         await new_service_invoice.save();

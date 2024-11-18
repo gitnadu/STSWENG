@@ -8,7 +8,7 @@ export async function GET() {
         const results = await ServiceAcknowledgment.find().exec();
         console.log(results)
 
-        return Response.json({ results, status: 200 });
+        return Response.json({ results }, { status: 200 });
     } catch (error) {
         console.error("Error:", error);
         return Response.json({ message: "An error occurred while getting service invoices." }, { status: 500 });
@@ -29,7 +29,7 @@ export async function POST(request) {
         }
 
         const new_service_ack = new ServiceAcknowledgment({
-            service: service_id,
+            service_id: service_id,
             service_areas: service_areas
         });
     
@@ -46,6 +46,7 @@ export async function POST(request) {
         console.log("Error: ", error);
         return Response.json({ 
             message: "Error occured while creating a new service acknowledgment instance.", 
+        }, {
             status: 500 
         });
     }

@@ -8,7 +8,7 @@ export async function GET() {
         const results = await Contract.find().exec();
         console.log(results)
 
-        return Response.json({ results, status: 200 });
+        return Response.json({ results }, { status: 200 });
     } catch (error) {
         console.error("Error:", error);
         return Response.json({ message: "An error occurred while getting contracts." }, { status: 500 });

@@ -8,7 +8,7 @@ export async function GET() {
         const results = await ServicedArea.find().exec();
         console.log(results)
 
-        return Response.json({ results, status: 200 });
+        return Response.json({ results }, { status: 200 });
     } catch (error) {
         console.error("Error:", error);
         return Response.json({ message: "An error occurred while getting services." }, { status: 500 });
@@ -25,7 +25,7 @@ export async function POST(request) { //Creates multiple instances of article.
         const service_ack = await ServiceAcknowledgment.findById(sa_id);
 
         if (!service_ack) {
-            throw new Error(`Service invoice with id ${sa_id} not found.`);
+            throw new Error(`Service acknowledgment with id ${sa_id} not found.`);
         }
     
         for (const serviced_area of serviced_areas) {
@@ -33,7 +33,7 @@ export async function POST(request) { //Creates multiple instances of article.
                 sa_id: sa_id,
                 area_name: serviced_area.area_name,
                 time_in: serviced_area.time_in,
-                time_out: serviced_area.time.out,
+                time_out: serviced_area.time_out,
                 acknowledged_by: serviced_area.acknowledged_by,
                 remarks: serviced_area.remarks
             });
@@ -51,7 +51,8 @@ export async function POST(request) { //Creates multiple instances of article.
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
-            message: "Error occured while creating new serviced area instances.", 
+            message: "Error occured while creating new serviced area instances." 
+        }, {
             status: 500 
         });
     }

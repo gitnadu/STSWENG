@@ -8,7 +8,7 @@ export async function GET() {
         const results = await Article.find().exec();
         console.log(results)
 
-        return Response.json({ results, status: 200 });
+        return Response.json({ results }, { status: 200 });
     } catch (error) {
         console.error("Error:", error);
         return Response.json({ message: "An error occurred while getting services." }, { status: 500 });
@@ -52,6 +52,7 @@ export async function POST(request) { //Creates multiple instances of article.
         console.log("Error: ", error);
         return Response.json({ 
             message: "Error occured while creating new article instances.", 
+        }, {
             status: 500 
         });
     }

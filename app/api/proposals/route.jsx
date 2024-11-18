@@ -30,7 +30,7 @@ export async function POST(request) {
             throw new Error(`Customer with id ${customer_id} not found.`);
         }
     
-        const new_proposal = new Contract({
+        const new_proposal = new Proposal({
             customer_id: customer_id,
             product: product,
             quotation_total: quotation_total,
