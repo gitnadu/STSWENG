@@ -10,7 +10,7 @@ const serviceInvoiceModel = new Schema({
   terms: { type: String, required: true },
   pwd_id_no: { type: String, required: false },
   business_style: { type: String, required: true },
-  file: { required: false, default: null }, //type not specified for now.
+  file: { type: String, required: false, default: null }, //type not specified for now.
   articles: {
     type: [Schema.Types.ObjectId],
     ref: "Article",

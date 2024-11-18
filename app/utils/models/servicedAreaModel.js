@@ -10,7 +10,7 @@ const serviedAreaModel = new Schema({
   time_in: { type: Date, required: true },
   time_out: { type: Date, required: true },
   acknowledged_by: { type: String, required: true },
-  remarks: { type: String, required: true },
+  remarks: { type: String, required: false },
 });
 
 const ServicedArea =

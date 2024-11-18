@@ -6,7 +6,7 @@ const serviceAckModel = new Schema({
     ref: "Service",
     required: true,
   },
-  file: { required: false, default: null }, //type not specified for now.
+  file: { type: String, required: false, default: null }, //type not specified for now.
   service_areas: {
     type: [Schema.Types.ObjectId],
     ref: "ServiceArea",
@@ -14,6 +14,6 @@ const serviceAckModel = new Schema({
 });
 
 const ServiceAcknowledgment =
-  models.ServiceInvoice ||
+  models.ServiceAcknowledgment ||
   model("ServiceAcknowledgment", serviceAckModel, "service_acknowledgments");
 export default ServiceAcknowledgment;
