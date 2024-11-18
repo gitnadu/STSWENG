@@ -29,6 +29,43 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
       - name: Install dependencies
         run: npm install
+        # Test each secret individually
+      - name: Check DATABASE_URL
+        run: |
+          if [ -z "${{ secrets.DATABASE_URL }}" ]; then
+            echo "DATABASE_URL is not set or empty."
+            exit 1
+          else
+            echo "DATABASE_URL is set."
+          fi
+
+      - name: Check NEXTAUTH_SECRET
+        run: |
+          if [ -z "${{ secrets.NEXTAUTH_SECRET }}" ]; then
+            echo "NEXTAUTH_SECRET is not set or empty."
+            exit 1
+          else
+            echo "NEXTAUTH_SECRET is set."
+          fi
+
+      - name: Check NEXTAUTH_URL
+        run: |
+          if [ -z "${{ secrets.NEXTAUTH_URL }}" ]; then
+            echo "NEXTAUTH_URL is not set or empty."
+            exit 1
+          else
+            echo "NEXTAUTH_URL is set."
+          fi
+
+      - name: Check PUBLIC_API_URL
+        run: |
+          if [ -z "${{ secrets.PUBLIC_API_URL }}" ]; then
+            echo "PUBLIC_API_URL is not set or empty."
+            exit 1
+          else
+            echo "PUBLIC_API_URL is set."
+          fi
+          
       - name: Build the application
         env:
           database_url: ${{ secrets.DATABASE_URL }}
