@@ -12,12 +12,14 @@ export async function GET(request, { params }) {
         console.log(customer);
         return Response.json({ 
             customer,
+        }, {
             status: 200 
         });
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
             message: "Error occured while deleting a selected customer instance.", 
+        }, {
             status: 500 
         });
     }
@@ -56,12 +58,14 @@ export async function PUT(request, { params }) {
         console.log(`Customer with id ${customer_id} has been updated successfully.`);
         return Response.json({ 
             message: `Customer with id ${customer_id} has been updated successfully.`, 
+        }, {
             status: 200 
         });
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
-            message: "Error occured while deleting a selected customer instance.", 
+            message: "Error occured while deleting a selected customer instance.",
+        }, {
             status: 500 
         });
     }
@@ -80,13 +84,15 @@ export async function DELETE(request, { params }) {
         //Returns a response.
         console.log(`Customer with id ${customer_id} has been deleted successfully.`);
         return Response.json({ 
-            message: `Customer with id ${customer_id} has been deleted successfully.`, 
+            message: `Customer with id ${customer_id} has been deleted successfully.`,
+        }, {
             status: 200 
         });
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
             message: "Error occured while deleting a selected customer instance.", 
+        }, {
             status: 500 
         });
     }

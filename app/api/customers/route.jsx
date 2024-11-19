@@ -36,7 +36,7 @@ export async function GET(request) {
         console.log(name, type, status, date);
         console.log(results)
 
-        return Response.json({ results, status: 200 });
+        return Response.json({ results }, { status: 200 });
     } catch (error) {
         console.error("Error:", error);
         return Response.json({ message: "An error occurred while getting a summary." }, { status: 500 });
@@ -76,12 +76,14 @@ export async function POST(request) {
 
         return Response.json({ 
             message: "Creating a new customer instance successful.", 
+        }, {
             status: 201 
         });
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
             message: "Error occured while creating a new customer instance.", 
+        }, {
             status: 500 
         });
     }
