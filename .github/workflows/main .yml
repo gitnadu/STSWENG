@@ -28,6 +28,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Build the application
+        env:
+          database_url: ${{ secrets.DATABASE_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          PUBLIC_API_URL: ${{ secrets.PUBLIC_API_URL }}
         run: npm run build
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
+      - name: Cypress run tests 1
+        uses: cypress-io/github-action@v6
+        env:
+          database_url: ${{ secrets.DATABASE_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          PUBLIC_API_URL: ${{ secrets.PUBLIC_API_URL }}
+        with:
+          build: npm run build
+          start: npm run start
