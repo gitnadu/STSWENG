@@ -33,8 +33,6 @@ export async function GET(request) {
 
         await connectDB();
         const results = await Customer.find(query).exec();
-        console.log(name, type, status, date);
-        console.log(results)
 
         return Response.json({ results, status: 200 });
     } catch (error) {
@@ -87,8 +85,47 @@ export async function POST(request) {
     }
 }
 
-export async function PUT() {
+export async function PUT(request) {
+    try {
+        const {
+            customer_id,
+            name,
+            contact_person,
+            email_address,
+            address,
+            services,
+            status,
+            type,
+            contact_number
+        } = await request.json();
 
+        if (!customer_id) {
+            return Response.json({ message: "Customer ID is required for update." }, { status: 400 });
+        }
+        await connectDB();
+        const updatedCustomer = await Customer.findByIdAndUpdate(
+            customer_id,
+            {
+                name: name,
+                contact_person: contact_person,
+                email_address: email_address,
+                address: address,
+                services: services,
+                status: status,
+                type: type,
+                contact_number: contact_number
+            },
+            { new: true } 
+        );
+        if (!updatedCustomer) {
+            return Response.json({ message: "Customer not found." }, { status: 404 });
+        }
+        console.log("Customer updated successfully.");
+        return Response.json({ message: "Customer updated successfully.", updatedCustomer, status: 200 });
+    } catch (error) {
+        console.error("Error:", error);
+        return Response.json({ message: "An error occurred while updating the customer.", status: 500 });
+    }
 }
 
 export async function DELETE() {
