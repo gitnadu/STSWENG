@@ -19,7 +19,7 @@ export async function POST(request) {
         { status: 404, headers: { "Content-Type": "application/json" } }
       );
     }
-    let contract = await Contract.findOne({ customer_id });
+    const contract = await Contract.findOne({ customer_id });
     if (contract) {
       contract.services = services;
       contract.start_date = new Date(start_date);

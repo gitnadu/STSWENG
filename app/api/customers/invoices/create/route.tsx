@@ -12,7 +12,7 @@ export async function POST(request) {
       );
     }
     const currentDate = new Date();
-    let existingInvoice = await ServiceInvoice.findOne({ customer_id });
+    const existingInvoice = await ServiceInvoice.findOne({ customer_id });
     if (existingInvoice) {
       existingInvoice.date = currentDate;
       existingInvoice.tin = tin;

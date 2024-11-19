@@ -20,7 +20,7 @@ export async function DELETE(request) {
       );
     }
     await ServicedArea.deleteMany({ sa_id });
-    acknowledgment.service_areas = acknowledgment.service_areas.filter(area => {
+    acknowledgment.service_areas = acknowledgment.service_areas.filter(() => {
       return false; 
     });
     await acknowledgment.save();
