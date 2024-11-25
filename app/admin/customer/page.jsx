@@ -369,10 +369,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
 
   const fetchAcknowledgementForCustomer = async (customerId) => {
     try {
-      const response = await fetch(`/api/customers/acknowledgements/get`, {
-        method: 'POST',
+      const response = await fetch(`/api/customers/acknowledgements/${customerId}`, {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_id: customerId })
       });
       const data = await response.json();
       if (response.ok && data.acknowledgments && data.acknowledgments.length > 0) {
@@ -655,10 +654,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   const saveAcknowledgements = async () => {
     setLoading(true);
     try {
-      const acknowledgmentResponse = await fetch(`/api/customers/acknowledgements/get`, {
-        method: 'POST',
+      const acknowledgmentResponse = await fetch(`/api/customers/acknowledgements/${customerData._id}`, {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_id: customerData._id })
       });
   
       const acknowledgmentDataResponse = await acknowledgmentResponse.json();
@@ -679,12 +677,12 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
 
         console.log(newAcknowledgmentPayload)
 
-        const acknowledgmentCreationRes = await fetch('/api/customers/acknowledgements/create', {
+        const acknowledgmentCreationRes = await fetch('/api/customers/acknowledgements', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newAcknowledgmentPayload),
         });
-  
+
         const newAcknowledgmentResult = await acknowledgmentCreationRes.json();
         if (!acknowledgmentCreationRes.ok) {
           throw new Error(`Acknowledgment Creation Error: ${newAcknowledgmentResult.message}`);
@@ -740,11 +738,11 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   const deleteAcknowledgmentsForCustomer = async () => {
     try {
       setLoading(true);
-      const acknowledgmentResponse = await fetch(`/api/customers/acknowledgements/get`, {
-        method: 'POST',
+      const acknowledgmentResponse = await fetch(`/api/customers/acknowledgements/${customerData._id}`, {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_id: customerData._id })
       });
+      
       const acknowledgmentData = await acknowledgmentResponse.json();
       if (!acknowledgmentResponse.ok || !acknowledgmentData.acknowledgments) {
         console.error('No acknowledgments found or failed to fetch:', acknowledgmentData.message);
@@ -757,10 +755,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
           body: JSON.stringify({ sa_id: acknowledgment._id })
         });
       }
-      const deleteAcknowledgmentsResponse = await fetch(`/api/customers/acknowledgements/delete`, {
+      const deleteAcknowledgmentsResponse = await fetch(`/api/customers/acknowledgements/${customerData._id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_id: customerData._id })
       });
       const deleteAcknowledgmentsData = await deleteAcknowledgmentsResponse.json();
       if (deleteAcknowledgmentsResponse.ok) {
