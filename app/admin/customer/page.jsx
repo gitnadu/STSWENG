@@ -104,10 +104,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
 
   const fetchProposalForCustomer = async (customerId) => {
     try {
-      const response = await fetch(`/api/customers/proposals/get`, {
-        method: 'POST',
+      const response = await fetch(`/api/customers/proposals/${customerId}`, {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_id:customerId })
       });
       const data = await response.json();
       if (response.ok && data.proposals && data.proposals.length > 0) {
@@ -128,7 +127,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   const deleteProposalForCustomer = async () => {
     setLoading(true)
     try {
-      const response = await fetch(`/api/customers/proposals/delete?customer_id=${customerData._id}`, {
+      const response = await fetch(`/api/customers/proposals/${customerData._id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -496,7 +495,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   const saveProposal = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/customers/proposals/create', {
+      const response = await fetch('/api/customers/proposals', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
