@@ -1,8 +1,21 @@
-import connectDB from "../../../../utils/connectDB";
-import Customer from "../../../../utils/models/customerModel";
-import Contract from "../../../../utils/models/contractModel";
+import connectDB from "../../../utils/connectDB";
+import Customer from "../../../utils/models/customerModel";
+import Contract from "../../../utils/models/contractModel";
 
-export async function GET(request) { //Get all contract instances
+export async function GET() {
+  try {
+      await connectDB();
+      const results = await Contract.find().exec();
+      console.log(results)
+
+      return Response.json({ results }, { status: 200 });
+  } catch (error) {
+      console.error("Error:", error);
+      return Response.json({ message: "An error occurred while getting contracts." }, { status: 500 });
+  }
+};
+
+export async function POST(request) { //Create a contract instance for a customer.
   await connectDB();
   try {
     const { customer_id, services, start_date, end_date, quotation_total, frequency, file } = await request.json();
