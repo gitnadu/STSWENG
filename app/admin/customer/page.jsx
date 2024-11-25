@@ -192,10 +192,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   const deleteInvoicesForCustomer = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`/api/customers/invoices/delete`, {
+      const response = await fetch(`/api/customers/invoices/${customerData._id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_id: customerData._id }) 
       });
       const data = await response.json();
       if (response.ok) {
@@ -233,10 +232,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
 
   const fetchInvoiceForCustomer = async (customerId) => {
     try {
-      const response = await fetch(`/api/customers/invoices/get`, {
-        method: 'POST',
+      const response = await fetch(`/api/customers/invoices/${customerId}`, {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_id: customerId })
       });
       const data = await response.json();
       if (response.ok && data.invoices && data.invoices.length > 0) {
@@ -573,7 +571,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
         business_style: "SERVICE INVOICE",
       };
       
-      const invoiceResponse = await fetch('/api/customers/invoices/create', {
+      const invoiceResponse = await fetch('/api/customers/invoices', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
