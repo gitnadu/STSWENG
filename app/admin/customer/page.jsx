@@ -307,10 +307,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
 
   const fetchServicedAreasForAcknowledgement = async (acknowledgementId) => {
     try {
-      const response = await fetch(`/api/customers/acknowledgements/servicedArea/get`, {
-        method: 'POST',
+      const response = await fetch(`/api/customers/acknowledgements/servicedAreas/${acknowledgementId}`, {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sa_id: acknowledgementId }),
       });
       const data = await response.json();
       if (response.ok && data.servicedAreas) {
@@ -689,10 +688,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       }
   
       if (!isNewAcknowledgment) {
-        await fetch(`/api/customers/acknowledgements/servicedArea/delete`, {
+        await fetch(`/api/customers/acknowledgements/servicedAreas/${acknowledgementId}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sa_id: acknowledgmentId })
         });
       }
   
@@ -712,7 +710,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
           time_out: convertTimeToTodayDate(area.time_out)
         };
   
-        const areaResponse = await fetch('/api/customers/acknowledgements/servicedArea/create', {
+        const areaResponse = await fetch('/api/customers/acknowledgements/servicedAreas', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(areaData),
@@ -747,10 +745,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
         return;
       }
       for (const acknowledgment of acknowledgmentData.acknowledgments) {
-        await fetch(`/api/customers/acknowledgements/servicedArea/delete`, {
+        await fetch(`/api/customers/acknowledgements/servicedAreas/${acknowledgment._id}`, {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sa_id: acknowledgment._id })
+          headers: { 'Content-Type': 'application/json' }
         });
       }
       const deleteAcknowledgmentsResponse = await fetch(`/api/customers/acknowledgements/${customerData._id}`, {
