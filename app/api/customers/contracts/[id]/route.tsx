@@ -2,10 +2,11 @@
 import connectDB from "../../../../utils/connectDB";
 import Contract from "../../../../utils/models/contractModel";
 
-export async function GET(request) { //Get a contract instance for a customer.
+export async function GET(request, { params }) { //Get a contract instance for a customer.
   await connectDB();
   try {
-    const { customer_id } = await request.json();
+    const customer_id = (await params).id;
+
     if (!customer_id) {
       return new Response(
         JSON.stringify({ message: "Customer ID is required." }),
@@ -32,11 +33,11 @@ export async function GET(request) { //Get a contract instance for a customer.
   }
 }
 
-export async function DELETE(request) { //Delete a contract instance for a customer.
+export async function DELETE(request, { params }) { //Delete a contract instance for a customer.
   await connectDB();
   try {
-    const url = new URL(request.url);
-    const customer_id = url.searchParams.get("customer_id");
+    const customer_id = (await params).id;
+
     if (!customer_id) {
       return new Response(
         JSON.stringify({ message: "Customer ID must be provided." }),
