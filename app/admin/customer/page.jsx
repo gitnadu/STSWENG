@@ -212,10 +212,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
 
   const fetchArticlesForInvoice = async (siId) => {
     try {
-      const response = await fetch(`/api/customers/invoices/articles/get`, {
-        method: 'POST',
+      const response = await fetch(`/api/customers/invoices/articles/${siId}`, {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ si_id: siId })
       });
       const data = await response.json();
       if (response.ok && data.articles) {
@@ -585,12 +584,11 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   
       const si_id = invoiceResult.invoice._id;
   
-      const deleteResponse = await fetch('/api/customers/invoices/articles/delete', {
+      const deleteResponse = await fetch(`/api/customers/invoices/articles/${si_id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ si_id }),
       });
   
       const deleteResult = await deleteResponse.json();
@@ -601,7 +599,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       for (const article of invoiceFields.articles) {
         const articleData = { ...article, si_id };
         
-        const articleResponse = await fetch('/api/customers/invoices/articles/create', {
+        const articleResponse = await fetch('/api/customers/invoices/articles', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
