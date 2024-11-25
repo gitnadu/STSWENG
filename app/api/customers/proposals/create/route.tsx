@@ -20,7 +20,7 @@ export async function POST(request) {
         { status: 404, headers: { "Content-Type": "application/json" } }
       );
     }
-    let proposal = await Proposal.findOne({ customer_id });
+    const proposal = await Proposal.findOne({ customer_id });
     if (proposal) {
       proposal.product = product;
       proposal.quotation_total = quotation_total;
