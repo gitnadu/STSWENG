@@ -506,9 +506,19 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   }
 
   //IsFieldFormValid functions.
+  const isProposalFormValid = (proposalFormFields) => {
+    const numRegex = /^[0-9]*(\.[0-9]{0,2})?$/;
+
+    return isFormFilled(proposalFormFields)
+    && followsRegex(proposalFormFields.quotation_total, numRegex);
+  }
+
   const isContractFormValid = (contractFormFields) => {
+    const numRegex = /^[0-9]*(\.[0-9]{0,2})?$/;
+
     return isFormFilled(contractFormFields) 
-    && isStartDateEarlierThanEndDate(contractFormFields.start_date, contractFormFields.end_date);
+    && isStartDateEarlierThanEndDate(contractFormFields.start_date, contractFormFields.end_date)
+    && followsRegex(contractFormFields.quotation_total, numRegex);
   };
   
   const selectedServices = contractFields.services || [];
@@ -1184,9 +1194,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                 {isEditingProposal ? (
                   <button
                     onClick={() => saveProposal()}
-                    disabled={!isFormFilled(proposalFields)}
+                    disabled={!isProposalFormValid(proposalFields)}
                     className={`bg-light-green text-white font-semibold py-1 px-4 rounded ${
-                      isFormFilled(proposalFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
+                      isProposalFormValid(proposalFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
                     }`}
                   >
                     SAVE
