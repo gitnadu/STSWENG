@@ -4,17 +4,17 @@ import ServiceInvoice from "../../../utils/models/serviceInvoiceModel";
 export async function POST(request) { //Creates a service invoice instance for a customer.
   await connectDB();
   try {
-    const { customer_id, tin, terms, pwd_id_no, business_style, file, articles } = await request.json();
+    const { customer_id, tin, terms, pwd_id_no, date, business_style, file, articles } = await request.json();
     if (!customer_id || !tin || !terms || !business_style) {
       return new Response(
         JSON.stringify({ message: "All required fields must be provided." }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
-    const currentDate = new Date();
+
     const existingInvoice = await ServiceInvoice.findOne({ customer_id });
     if (existingInvoice) {
-      existingInvoice.date = currentDate;
+      existingInvoice.date = date;
       existingInvoice.tin = tin;
       existingInvoice.terms = terms;
       existingInvoice.pwd_id_no = pwd_id_no;
@@ -29,7 +29,7 @@ export async function POST(request) { //Creates a service invoice instance for a
     } else {
       const newInvoice = new ServiceInvoice({
         customer_id,
-        date: currentDate,
+        date: date,
         tin,
         terms,
         pwd_id_no,
