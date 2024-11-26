@@ -475,6 +475,13 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       return Object.values(formFields).every(field => field !== '');
   };
 
+  const isDateEarlierThanCurrentDate = (date) => {
+    const date_obj = new Date(date);
+    let current_date_obj = new Date();
+    current_date_obj = new Date(current_date_obj.toDateString());
+    return date_obj < current_date_obj;
+  }
+
   const isStartDateEarlierThanEndDate = (start_date, end_date) => {
     const start_date_obj = new Date(start_date);
     const end_date_obj = new Date(end_date);
@@ -490,6 +497,10 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     return isFormFilled(contractFormFields) 
     && isStartDateEarlierThanEndDate(contractFormFields.start_date, contractFormFields.end_date);
   };
+
+  const isServiceFormValid = (invoiceFormFields) => {
+    return isFormFilled(invoiceFormFields) && isDateEarlierThanCurrentDate(invoiceFormFields.date)
+  }
   
   const selectedServices = contractFields.services || [];
 
@@ -1625,9 +1636,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       {isEditingInvoice ? (
         <button
           onClick={() => saveInvoice()}
-           disabled={!isServiceInvoiceFormFilled(invoiceFields)}
+           disabled={!isServiceFormValid(invoiceFields)}
           className={`bg-light-green text-white font-semibold py-1 px-4 rounded ${
-            isServiceInvoiceFormFilled(invoiceFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
+            isServiceFormValid(invoiceFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
           }`}
         >
           SAVE
