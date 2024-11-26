@@ -834,6 +834,13 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     </option>
   ));
 
+  const productOptionList = ["Exterra Baiting System", "Product 2", "Product 3"].map((product, index) => (
+    <option key={index + 1} value={product} selected={product == proposalFields.product}>
+      {product}
+    </option>
+    )
+  );
+
   if (!isOpen) return null;
   
   const closeModal = () => {
@@ -842,7 +849,6 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   }
   return (
     <div>
-```jsx
 {
   confirmDelete.isOpen && (
     <dialog open className="fixed inset-0 z-[1050] flex items-center justify-center">
@@ -1073,13 +1079,16 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                   <div className="mb-4">
                     <label className="block text-md font-semibold text-dark-green pb-2">Product</label>
                     {isEditingProposal ? (
-                      <input
+                      <select
                         type="text"
                         name="product"
                         value={proposalFields.product}
                         onChange={(e) => handleInputChange(e, 'proposalForm')}
                         className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
-                      />
+                        >
+                        <option key={0} disabled selected={!proposalFields.product} value>Select product</option>
+                        {productOptionList}
+                      </select>
                     ) : (
                       <div>{proposalFields.product}</div>
                     )}
