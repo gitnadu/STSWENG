@@ -474,6 +474,22 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   const isFormFilled = (formFields) => {
       return Object.values(formFields).every(field => field !== '');
   };
+
+  const isStartDateEarlierThanEndDate = (start_date, end_date) => {
+    const start_date_obj = new Date(start_date);
+    const end_date_obj = new Date(end_date);
+    return start_date_obj < end_date_obj;
+  }
+
+  const followsRegex = (formField, regex) => {
+    return regex.test(formField);
+  }
+
+  //IsFieldFormValid functions.
+  const isContractFormValid = (contractFormFields) => {
+    return isFormFilled(contractFormFields) 
+    && isStartDateEarlierThanEndDate(contractFormFields.start_date, contractFormFields.end_date);
+  };
   
   const selectedServices = contractFields.services || [];
 
@@ -1271,6 +1287,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                     type="number"
                     name="quotation_total"
                     value={contractFields.quotation_total}
+                    min="0"
                     onChange={(e) => handleInputChange(e, 'contract')}
                     className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
                   />
@@ -1298,9 +1315,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                 {isEditingContract ? (
                   <button
                     onClick={() => saveContract()}
-                    disabled={!isFormFilled(contractFields)}
+                    disabled={!isContractFormValid(contractFields)}
                     className={`bg-light-green text-white font-semibold py-1 px-4 rounded ${
-                      isFormFilled(contractFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
+                      isContractFormValid(contractFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
                     }`}
                   >
                     SAVE
