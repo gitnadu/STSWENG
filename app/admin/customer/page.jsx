@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import ClientRow from '@/app/components/admin/customerRow';
 import CustomerForm from '@/app/components/admin/customerForm';
 import Image from 'next/image';
+import moment from 'moment';
 
 function formatDate(dateString) {
   if (!dateString) return 'N/A';
@@ -478,6 +479,18 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     return acknowledgementFields.servicedAreas.every(isServicedAreaFilled) && acknowledgementFields.date != '';
   };
 
+  const timeInEarlierThanTimeOut = (area) => {
+    const time_in_obj = moment(area.time_in, "HH:mm");
+    const time_out_obj = moment(area.time_out, "HH:mm");
+
+    return time_in_obj.isBefore(time_out_obj);
+  };
+
+  const isAcknowledgementFormValid = (acknowledgementFields) => {
+    return isAcknowledgementFormFilled(acknowledgementFields)
+    && isDateEarlierThanCurrentDate(acknowledgementFields.date)
+    && acknowledgementFields.servicedAreas.every(timeInEarlierThanTimeOut);
+  };
 
   const isFormFilled = (formFields) => {
       return Object.values(formFields).every(field => field !== '');
@@ -1896,9 +1909,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     {isEditingAcknowledgement ? (
       <button
         onClick={() => saveAcknowledgements()}
-        disabled={!isAcknowledgementFormFilled(acknowledgementFields)}
+        disabled={!isAcknowledgementFormValid(acknowledgementFields)}
         className={`bg-light-green text-white font-semibold py-1 px-4 rounded ${
-          isAcknowledgementFormFilled(acknowledgementFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
+          isAcknowledgementFormValid(acknowledgementFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
         }`}
       >
         SAVE
