@@ -17,11 +17,11 @@ const NavBar = () => {
             <Image
                 className='mr-2'
                 src="/NavBar/logo.png"
-                alt="MultiPest"
+                alt="Multi-Pest"
                 width={98}
                 height={85}
               />
-              <div className='text-white text-2xl font-semibold '>MultiPest Services</div>
+              <div className='text-white text-2xl font-semibold '>Multi-Pest Services</div>
             </Link>
           </div>
         </nav>
@@ -34,11 +34,11 @@ const NavBar = () => {
             <Image
                 className='mr-2'
                 src="/NavBar/logo.png"
-                alt="MultiPest"
+                alt="Multi-Pest"
                 width={98}
                 height={85}
               />
-              <div className='text-white text-2xl font-semibold '>MultiPest Services</div>
+              <div className='text-white text-2xl font-semibold '>Multi-Pest Services</div>
             </Link>
           </div>
           <div className="flex items-center text-white gap-20 text-xl pr-16 h-max">
@@ -49,7 +49,7 @@ const NavBar = () => {
               <div>Forms</div>
               <Image
                 src="/NavBar/Services.png"
-                alt="MultiPest"
+                alt="Multi-Pest"
                 width={15}
                 height={17.45}
               />
@@ -67,11 +67,11 @@ const NavBar = () => {
               <Image
                 className='mr-2'
                 src="/NavBar/logo.png"
-                alt="MultiPest"
+                alt="Multi-Pest"
                 width={98}
                 height={85}
               />
-              <div className='text-white text-2xl font-semibold '>MultiPest Services</div>
+              <div className='text-white text-2xl font-semibold '>Multi-Pest Services</div>
             </Link>
           </div>
           <div className="flex items-center text-white gap-20 text-xl pr-16 h-max">
@@ -79,7 +79,7 @@ const NavBar = () => {
               <div>Location</div>
               <Image
                 src="/NavBar/Location.png"
-                alt="MultiPest"
+                alt="Multi-Pest"
                 width={15}
                 height={17.45}
               />
@@ -88,7 +88,7 @@ const NavBar = () => {
               <div>Services</div>
               <Image
                 src="/NavBar/Services.png"
-                alt="MultiPest"
+                alt="Multi-Pest"
                 width={15}
                 height={17.45}
               />
@@ -97,7 +97,7 @@ const NavBar = () => {
               <div>Contact Us</div>
               <Image
                 src="/NavBar/Contact Us.png"
-                alt="MultiPest"
+                alt="Multi-Pest"
                 width={15}
                 height={17.45}
               />
