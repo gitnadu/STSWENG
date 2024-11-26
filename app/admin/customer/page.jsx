@@ -461,7 +461,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     const tinRegex = /^\d{9,12}$/;
 
     return isServiceInvoiceFormFilled(invoiceFields)
-    && isDateEarlierThanCurrentDate(invoiceFields.date)
+    && isDateEarlierThanOrEqualToCurrentDate(invoiceFields.date)
     && followsRegex(invoiceFields.tin, tinRegex);
   }
 
@@ -479,28 +479,20 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     return acknowledgementFields.servicedAreas.every(isServicedAreaFilled) && acknowledgementFields.date != '';
   };
 
-  const timeInEarlierThanTimeOut = (area) => {
-    const time_in_obj = moment(area.time_in, "HH:mm");
-    const time_out_obj = moment(area.time_out, "HH:mm");
-
-    return time_in_obj.isBefore(time_out_obj);
-  };
-
   const isAcknowledgementFormValid = (acknowledgementFields) => {
     return isAcknowledgementFormFilled(acknowledgementFields)
-    && isDateEarlierThanCurrentDate(acknowledgementFields.date)
-    && acknowledgementFields.servicedAreas.every(timeInEarlierThanTimeOut);
+    && isDateEarlierThanOrEqualToCurrentDate(acknowledgementFields.date);
   };
 
   const isFormFilled = (formFields) => {
       return Object.values(formFields).every(field => field !== '');
   };
 
-  const isDateEarlierThanCurrentDate = (date) => {
+  const isDateEarlierThanOrEqualToCurrentDate = (date) => {
     const date_obj = new Date(date);
-    let current_date_obj = new Date();
-    current_date_obj = new Date(current_date_obj.toDateString());
-    return date_obj < current_date_obj;
+    const current_date_obj = new Date();
+
+    return date_obj <= current_date_obj;
   }
 
   const isStartDateEarlierThanEndDate = (start_date, end_date) => {
@@ -510,8 +502,6 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   }
 
   const followsRegex = (formField, regex) => {
-    console.log("Testing regex.");
-    console.log(regex.test(formField));
     return regex.test(formField);
   }
 
@@ -1164,6 +1154,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                         type="number"
                         name="quotation_total"
                         value={proposalFields.quotation_total}
+                        min="0"
                         onChange={(e) => handleInputChange(e, 'proposalForm')}
                         className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
                       />
