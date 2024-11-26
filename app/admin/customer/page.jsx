@@ -456,6 +456,14 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     );
   };
 
+  const isServiceInvoiceFormValid = (invoiceFields) => {
+    const tinRegex = /^\d{9,12}$/;
+
+    return isServiceInvoiceFormFilled(invoiceFields)
+    && isDateEarlierThanCurrentDate(invoiceFields.date)
+    && followsRegex(invoiceFields.tin, tinRegex);
+  }
+
   const isAcknowledgementFormFilled = (acknowledgementFields) => {
     const isServicedAreaFilled = (area) => {
       return (
@@ -489,6 +497,8 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   }
 
   const followsRegex = (formField, regex) => {
+    console.log("Testing regex.");
+    console.log(regex.test(formField));
     return regex.test(formField);
   }
 
@@ -497,10 +507,6 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     return isFormFilled(contractFormFields) 
     && isStartDateEarlierThanEndDate(contractFormFields.start_date, contractFormFields.end_date);
   };
-
-  const isServiceFormValid = (invoiceFormFields) => {
-    return isFormFilled(invoiceFormFields) && isDateEarlierThanCurrentDate(invoiceFormFields.date)
-  }
   
   const selectedServices = contractFields.services || [];
 
@@ -1533,6 +1539,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                 type="number"
                 name="quantity"
                 value={article.quantity}
+                min="0"
                 onChange={(e) => handleArticleChange(e, index)}
                 className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
               />
@@ -1583,6 +1590,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                 type="number"
                 name="unit_price"
                 value={article.unit_price}
+                min="0"
                 onChange={(e) => handleArticleChange(e, index)}
                 className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
               />
@@ -1599,6 +1607,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                 type="number"
                 name="amount"
                 value={article.amount}
+                min="0"
                 onChange={(e) => handleArticleChange(e, index)}
                 className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
               />
@@ -1636,9 +1645,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       {isEditingInvoice ? (
         <button
           onClick={() => saveInvoice()}
-           disabled={!isServiceFormValid(invoiceFields)}
+           disabled={!isServiceInvoiceFormValid(invoiceFields)}
           className={`bg-light-green text-white font-semibold py-1 px-4 rounded ${
-            isServiceFormValid(invoiceFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
+            isServiceInvoiceFormValid(invoiceFields) ? 'hover:bg-dark-green-C' : 'opacity-50 cursor-not-allowed'
           }`}
         >
           SAVE
