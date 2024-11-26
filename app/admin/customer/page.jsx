@@ -267,6 +267,13 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     }
   };
   
+  const isTimeInEarlierThanOrEqualToTimeOut = (timeIn, timeOut) => {
+    const [hoursIn, minutesIn] = timeIn.split(':').map(Number);
+    const [hoursOut, minutesOut] = timeOut.split(':').map(Number);
+    return hoursIn < hoursOut || (hoursIn === hoursOut && minutesIn <= minutesOut);
+  };
+  
+
   const handleAddArticle = () => {
     setInvoiceFields((prevState) => ({
       ...prevState,
@@ -296,6 +303,10 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
   };
   const handleArticleChange = (e, index) => {
     const { name, value } = e.target;
+    if (['quantity', 'unit', 'unit_price', 'amount'].includes(name) && value < 0) {
+      alert(`${name} cannot be negative.`);
+      return;
+    }
     setInvoiceFields((prevState) => {
       const articles = [...prevState.articles];
       articles[index] = {
@@ -835,11 +846,21 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     setOpenSection(openSection === section ? null : section);
   };
 
+  const isTimeInEarlierThanTimeOut = (timeIn, timeOut) => {
+    const [hoursIn, minutesIn] = timeIn.split(':').map(Number);
+    const [hoursOut, minutesOut] = timeOut.split(':').map(Number);
+    return hoursIn < hoursOut || (hoursIn === hoursOut && minutesIn <= minutesOut);
+  };
+
   const handleInputChange = (event, section) => {
     const { name, value } = event.target;
     
     switch (section) {
       case 'customerInformation':
+        if (name === 'contact_number' && value.length > 11) {
+          alert('Contact number can not exceed 11 digits.');
+          return;
+        }
         setCustomerFields(prevState => ({ ...prevState, [name]: value }));
         break;
       case 'proposalForm':
@@ -849,9 +870,20 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
         setContractFields(prevState => ({ ...prevState, [name]: value }));
         break;
       case 'serviceInvoice':
+        if (['quotation_total', 'terms', 'quantity', 'unit_price', 'unit', 'amount'].includes(name) && value < 0) {
+          alert(`${name} cannot be negative.`);
+          return;
+        }
         setInvoiceFields(prevState => ({ ...prevState, [name]: value }));
         break;
       case 'serviceAcknowledgement':
+        if (name === 'time_in' || name === 'time_out') {
+          const otherTime = name === 'time_in' ? acknowledgementFields.servicedAreas[index].time_out : acknowledgementFields.servicedAreas[index].time_in;
+          if (!isTimeInEarlierThanTimeOut(name === 'time_in' ? value : otherTime, name === 'time_out' ? value : otherTime)) {
+            alert('Time In cannot be later than Time Out.');
+            return;
+          }
+        }
         setAcknowledgementFields(prevState => ({ ...prevState, [name]: value }));
         break;
     }
@@ -1069,6 +1101,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                       <input
                         type="text"
                         name="contact_number"
+                        maxLength={11}
                         value={customerFields.contact_number}
                         onChange={(e) => handleInputChange(e, 'customerInformation')}
                         className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
@@ -1323,7 +1356,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                     className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
                   />
                 ) : (
-                  <div>{contractFields.quotation_total}</div>
+                  <div>₱{contractFields.quotation_total}</div>
                 )}
               </div>
   
@@ -1894,9 +1927,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
         {index === acknowledgementFields.servicedAreas.length - 1 && (
           <button
             onClick={handleAddServicedArea}
-            disabled={isServicedAreaEmpty(area)}
+            disabled={isServicedAreaEmpty(area) ||  !isTimeInEarlierThanOrEqualToTimeOut(area.time_in, area.time_out)}
             className={`bg-light-green text-white font-semibold py-1 px-4 rounded ${
-              isServicedAreaEmpty(area) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-dark-green-C'
+              isServicedAreaEmpty(area) ||  !isTimeInEarlierThanOrEqualToTimeOut(area.time_in, area.time_out) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-dark-green-C'
             }`}
           >
             ADD
