@@ -77,7 +77,6 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     services: []
   });
 
-  console.log(customerFields.services)
   const [proposalFields, setProposalFields] = useState({
     product: '',
     frequency: '',
@@ -728,8 +727,6 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
           file: null,
           service_areas: []
         };
-
-        console.log(newAcknowledgmentPayload)
 
         const acknowledgmentCreationRes = await fetch('/api/customers/acknowledgements', {
           method: 'POST',
@@ -2009,13 +2006,6 @@ const Page = () => {
   );
   const [modalOpen, setModalOpen] = useState(false);
 
-  const printFilters = () => {
-    console.log(nameFilter);
-    console.log(typeFilter);
-    console.log(statusFilter);
-    console.log(dateFilter);
-  }
-
   function formatDate(dateString) {
     if (!dateString) return "N/A"; 
     const date = new Date(dateString);
@@ -2027,8 +2017,6 @@ const Page = () => {
 
   useEffect(() => {
     if (fetching) {
-      console.log("Fetching...");
-
       let filterParams = [
         nameFilter ? `name=${nameFilter}` : "",
         typeFilter ? `type=${typeFilter}` : "",
@@ -2038,9 +2026,6 @@ const Page = () => {
 
       filterParams = filterParams.filter(param => param !== "");
       const urlStr = (filterParams.length > 0 ? "?" : "") + filterParams.join("&")
-
-      console.log(filterParams);
-      console.log(urlStr);
 
       fetch(`/api/customers${urlStr}`)
       .then((response) => response.json())

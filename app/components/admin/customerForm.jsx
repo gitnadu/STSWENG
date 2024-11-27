@@ -7,11 +7,8 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     const typeOptions = ["Industrial", "Residential", "Commercial", "Service", "Retail", "Other"];
     const serviceOptions = ["Hygenic Pest Control", "Termite Control", "Rodent Control"];
 
-    //States store inputs.
-    console.log(customerID);
-
     const [formData, setFormData] = useState({
-        name: "",
+        client_name: "",
         contact_person: "",
         email_address: "",
         address: "",
@@ -22,7 +19,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     });
 
     const [errors, setErrors] = useState({
-        name: "",
+        client_name: "",
         contact_person: "",
         email_address: "",
         address: "",
@@ -33,9 +30,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     })
 
     useEffect(() => {
-        if (isForEdit) {
-          console.log(`Fetching customer with id ${customerID}...`);
-    
+        if (isForEdit) {    
           fetch(`/api/customers/${customerID}`)
           .then((response) => response.json())
           .then((data) => {
@@ -48,31 +43,6 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
           .catch((error) => console.error('Error while fetching a customer:', error));
         } 
     }, [isForEdit, customerID]);
-
-    console.log("Initial formData:")
-    console.log(formData);
-
-    const printInputs = () => {
-        console.log(formData.name);
-        console.log(formData.contact_person);
-        console.log(formData.email_address);
-        console.log(formData.address);
-        console.log(formData.services);
-        console.log(formData.status);
-        console.log(formData.type);
-        console.log(formData.contact_number);
-    };
-
-    const printErrorMessages = () => {
-        console.log(errors.name);
-        console.log(errors.contact_person);
-        console.log(errors.email_address);
-        console.log(errors.address);
-        console.log(errors.services);
-        console.log(errors.status);
-        console.log(errors.type);
-        console.log(errors.contact_number);
-    }
 
     const handleChange = (e) => {
         e.stopPropagation();
@@ -105,7 +75,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
 
     const handleSubmit = async () => {
         const new_errors = {
-            name: "",
+            client_name: "",
             contact_person: "",
             email_address: "",
             address: "",
@@ -206,9 +176,9 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
                 </div>
                 <div className="flex flex-row justify-center px-4">
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 1 */}
-                        <TextInput name="name" label="Client Name" onChange={handleChange}
-                        value={formData.name}
-                        error_msg={errors.name} />
+                        <TextInput name="client_name" label="Client Name" onChange={handleChange}
+                        value={formData.client_name}
+                        error_msg={errors.client_name} />
                         <TextInput name="contact_person" label="Contact Person" onChange={handleChange}
                         value={formData.contact_person}
                         error_msg={errors.contact_person} />
