@@ -7,6 +7,7 @@ import CustomerForm from './customerForm'
 describe('<CustomerForm />', () => {
   it('Fill in all of the fields correctly.', () => {
     // see: https://on.cypress.io/mounting-react
+    cy.viewport(1280, 720); // Set the viewport to 1280x720 (HD)
     cy.mount(<CustomerForm />)
 
     cy.getByData("input_client_name").type("DLSU Manila");
@@ -23,6 +24,7 @@ describe('<CustomerForm />', () => {
 
   it('Fill in a contact number incorrectly.', () => {
     // see: https://on.cypress.io/mounting-react
+    cy.viewport(1280, 720); // Set the viewport to 1280x720 (HD)
     cy.mount(<CustomerForm />)
 
     cy.getByData("input_client_name").type("Multi-Pest Services Corp.");
@@ -39,6 +41,7 @@ describe('<CustomerForm />', () => {
 
   it('Fill in an email address incorrectly.', () => {
     // see: https://on.cypress.io/mounting-react
+    cy.viewport(1280, 720); // Set the viewport to 1280x720 (HD)
     cy.mount(<CustomerForm />)
 
     cy.getByData("input_client_name").type("Multi-Pest Services Corp.");
@@ -54,6 +57,7 @@ describe('<CustomerForm />', () => {
   })
 
   it("Fill in some of the fields.", () => {
+    cy.viewport(1280, 720); // Set the viewport to 1280x720 (HD)
     cy.mount(<CustomerForm />);
 
     cy.getByData("input_client_name").type("DLSU Laguna");
@@ -69,6 +73,7 @@ describe('<CustomerForm />', () => {
   });
 
   it("Do not fill in all fields.", () => {
+    cy.viewport(1280, 720); // Set the viewport to 1280x720 (HD)
     cy.mount(<CustomerForm />);
 
     cy.getByData("submit_button").click();
