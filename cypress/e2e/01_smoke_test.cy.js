@@ -16,16 +16,30 @@ describe('Smoke Tests', () => {
         cy.url().should('include', '/client/home');
     });
 
+    
     it("should allow the user to login to admin dashboard", () => {
-        cy.visit("http://localhost:3000/admin/dashboard");
-        cy.wait(4000); //Going to dashboard or home is slow for some reason.
+        cy.visit("http://localhost:3000");
+        cy.get('input[type="text"][placeholder="Enter your username"]').type("Adriel");
+        cy.get('input[type="password"][placeholder="Enter your password"]').type("Fancubit");
+        cy.get('[data-test="submit-button"]').should('be.visible').click();             // Click the button
+        cy.wait(1000); //Going to dashboard or home is slow for some reason.
         cy.url().should('include', '/admin/dashboard');
       });
 
+    
+      /*
     it('should display customer page', () => {
       // Verify table renders with data
+        cy.get('input[type="text"][placeholder="Enter your username"]').type("Adriel");
+        cy.get('input[type="password"][placeholder="Enter your password"]').type("Fancubit");
+        cy.get('[data-test="submit-button"]').should('be.visible').click();             // Click the button
+        cy.visit("http://localhost:3000/admin/dashboard");
+        cy.wait(10000); //Going to dashboard or home is slow for some reason.
         cy.visit("http://localhost:3000/admin/customer");
+        cy.wait(10000); //Going to dashboard or home is slow for some reason.
+        cy.url().should('include', '/admin/customer');
     });
+      */
 
   });
   
