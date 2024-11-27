@@ -45,7 +45,7 @@ const NavBar = () => {
             <Link href="/admin/customer" className="flex items-center gap-3">
               <div>Customer</div>
             </Link>
-            <Link href="/client/home" className="flex items-center gap-3">
+            <Link href="/admin/dashboard" className="flex items-center gap-3">
               <div>Forms</div>
               <Image
                 src="/NavBar/Services.png"

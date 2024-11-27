@@ -4,13 +4,14 @@ export default async function Dashboard() {
     cache: 'no-store',
   });
 
-  const { 
-    num_of_total_customers,
-    num_of_active_customers,
-    num_of_accomplished_services,
-    num_reports_submitted,
-    num_of_services_today
-  }  = await data.json();
+    const { 
+      num_of_total_customers,
+      num_of_active_customers,
+      num_of_accomplished_services,
+      num_reports_submitted,
+      num_of_services_today
+    }  = await data.json();
+
 
   return (
     <div className="bg-light-green-A h-[calc(100vh-98px)] flex flex-col items-center justify-center w-screen gap-y-24">
