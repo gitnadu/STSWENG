@@ -9,7 +9,7 @@ const contractModel = new Schema({
   services: {
     type: [String],
     required: true,
-    enum: ["Hygenic Pest Control", "Termite Control", "Rodent Control"],
+    enum: ["Hygienic Pest Control", "Termite Control", "Rodent Control"],
   },
   start_date: { type: Date, required: true },
   end_date: { type: Date, required: true },
@@ -19,5 +19,5 @@ const contractModel = new Schema({
 });
 
 const Contract =
-  models.Proposal || model("Contract", contractModel, "contracts");
+  models.Contract  || model("Contract", contractModel, "contracts");
 export default Contract;
