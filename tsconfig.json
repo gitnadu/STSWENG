@@ -29,7 +29,7 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx", "cypress/e2e/login.cy.js"  ],
+    "**/*.tsx", "cypress/e2e/login.cy.js", "app/admin/customer/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]
