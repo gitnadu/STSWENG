@@ -62,7 +62,7 @@ const customerSchema = new Schema({
     type: [String],
     required: true,
     enum: {
-      values: ["Hygienic Pest Control", "Termite Control", "Rodent Control"],
+      values: ["Hygenic Pest Control", "Termite Control", "Rodent Control"],
       message: "{VALUE} is not supported.",
     },
   },
