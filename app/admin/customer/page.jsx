@@ -1998,15 +1998,59 @@ const Page = () => {
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
   const [refetchTrigger, setRefetchTrigger] = useState(false);
   const [loading, setLoading] = useState(true);
+  const typeOptions = ["Industrial", "Residential", "Commercial", "Service", "Retail", "Other"];
+  const statusOptions = ["Completed", "Ongoing", "Terminated", "Pending"];
+  const typeOptionList = typeOptions.map((type, index) =>
+    <option key={index + 2} value={type}>{type}</option>
+  );
+
+  const statusOptionList = statusOptions.map((status, index) =>
+    <option key={index + 1} value={status}>{status}</option>
+  );
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const printFilters = () => {
+    console.log(nameFilter);
+    console.log(typeFilter);
+    console.log(statusFilter);
+    console.log(dateFilter);
+  }
+
+  function formatDate(dateString) {
+    if (!dateString) return "N/A"; 
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  }
+
   useEffect(() => {
     if (fetching) {
-      fetch(`/api/customers`)
-        .then((response) => response.json())
-        .then((data) => setCustomers(data.results))
-        .catch((error) => console.error('Error fetching customers:', error));
-      setFetching(false);
+      console.log("Fetching...");
+
+      let filterParams = [
+        nameFilter ? `name=${nameFilter}` : "",
+        typeFilter ? `type=${typeFilter}` : "",
+        statusFilter ? `status=${statusFilter}` : "",
+        dateFilter ? `date=${dateFilter}` : ""
+      ];
+
+      filterParams = filterParams.filter(param => param !== "");
+      const urlStr = (filterParams.length > 0 ? "?" : "") + filterParams.join("&")
+
+      console.log(filterParams);
+      console.log(urlStr);
+
+      fetch(`/api/customers${urlStr}`)
+      .then((response) => response.json())
+      .then((data) => setCustomers(data.results))
+      .catch((error) => console.error('Error fetching customers:', error));
     }
-  }, [fetching]);
+
+    setFetching(false);    
+  }, [nameFilter, typeFilter, statusFilter, dateFilter, fetching]);
+
 
   const handleRowClick = (customerId) => {
     setSelectedCustomerId(customerId);
@@ -2014,6 +2058,7 @@ const Page = () => {
     setRefetchTrigger(prev => !prev);
     setLoading(true)
   };
+
 
 
   return (
@@ -2030,7 +2075,59 @@ const Page = () => {
           setFetching={setFetching}
         />
       </div>
-      
+      <div className='text-normal-green text-5xl italic font-bold'>Clients</div>
+        <div className='flex items-center space-x-4 mt-5'>
+        <svg width="22" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="7" width="16" height="2" fill="#8A9E79"/>
+        <rect x="8" y="11" width="8" height="2" fill="#8A9E79"/>
+        <rect x="10" y="15" width="4" height="2" fill="#8A9E79"/>
+        </svg>
+        <div className='flex items-center border border-normal-green rounded-md px-3 hover:border-green-700 hover:shadow-lg focus-within:border-green-700'>
+            <input type="text" placeholder="Search" 
+            className='border-0 focus:ring-0 focus:ring-offset-0 text-normal-green w-[236px] outline-none bg-white' 
+            onChange={(e) => {
+              e.stopPropagation();
+              setNameFilter(e.target.value);
+            }} />
+            <svg className='text-normal-green w-5 h-5 mr-2' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 4a6 6 0 100 12 6 6 0 000-12zm13 15l-7.5-4.5" />
+            </svg>
+        </div>
+        <select 
+        className='w-[169px] border border-normal-green text-normal-green bg-white py-2 px-3 rounded-md hover:border-green-700 hover:shadow focus:border-green-700'
+        onChange={(e) => {
+          e.stopPropagation();
+          setTypeFilter(e.target.value);
+        }}>
+            <option disabled selected>Type</option>
+            <option key={1} value="">None</option>
+            {typeOptionList}
+        </select>
+        <select 
+        className='w-[169px] border border-normal-green bg-white py-2 px-3 text-normal-green rounded-md hover:border-green-700 hover:shadow focus:border-green-700'
+        onChange={(e) => {
+          e.stopPropagation();
+          setStatusFilter(e.target.value);
+        }}>
+            <option disabled selected>Status</option>
+            <option key={1} value="">None</option>
+            {statusOptionList}
+        </select>
+        <input type="date" 
+        className='w-[224px] border border-normal-green py-2 px-3 text-normal-green rounded-md bg-white hover:border-green-700 hover:shadow focus:border-green-700' 
+        onChange={(e) => {
+          e.stopPropagation();
+          setDateFilter(e.target.value);
+        }} />
+        <button 
+        className='btn border-none hover:bg-yellow-700 active:bg-green-900 w-[202px] bg-light-green text-white py-2 px-5 rounded-md'
+        onClick={() => {
+          printFilters();
+          setFetching(true);
+        }}>
+            Filter
+        </button>
+        </div>
       <div className='w-full grid grid-cols-5 text-normal-green text-xl font-bold'>
         <div className='flex justify-center'>Client Name</div>
         <div className='flex justify-center'>Type</div>
