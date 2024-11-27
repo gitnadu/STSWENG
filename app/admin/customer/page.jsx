@@ -2114,7 +2114,6 @@ const Page = () => {
         <button 
         className='btn border-none hover:bg-yellow-700 active:bg-green-900 w-[202px] bg-light-green text-white py-2 px-5 rounded-md'
         onClick={() => {
-          printFilters();
           setFetching(true);
         }}>
             Filter
