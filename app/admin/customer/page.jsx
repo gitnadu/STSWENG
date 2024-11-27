@@ -2066,7 +2066,7 @@ const Page = () => {
         />
       </div>
       <div className='text-normal-green text-5xl italic font-bold'>Clients</div>
-        <div className='flex items-center space-x-4 mt-5'>
+        <div className='flex items-center space-x-4 my-5'>
         <svg width="22" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="4" y="7" width="16" height="2" fill="#8A9E79"/>
         <rect x="8" y="11" width="8" height="2" fill="#8A9E79"/>
@@ -2128,7 +2128,24 @@ const Page = () => {
       <hr className='bg-normal-green h-[2px] w-full mt-3'></hr>
       {customers.map((customer) => (
         <div key={customer._id} className="cursor-pointer" onClick={() => handleRowClick(customer._id)}>
-          <ClientRow name={customer.name} type={customer.type} status={customer.status} createdAt={formatDate(customer.date)} />
+          <ClientRow
+            id={customer._id}
+            name={customer.name}
+            type={customer.type}
+            status={customer.status}
+            createdAt={formatDate(customer.date)}
+            onClickEdit={(e) => {
+              setSelectedCustomerId(customer._id);
+              setCustomerModalOpen(true);
+              setIsFormForEdit(true);
+              e.stopPropagation();
+            }}
+            onClickDelete={(e) => {
+              setSelectedCustomerId(customer._id);
+              setDeleteCustomerModalOpen(true);
+              e.stopPropagation();
+            }}
+          />
         </div>
       ))}
       <div className='flex justify-end'>
