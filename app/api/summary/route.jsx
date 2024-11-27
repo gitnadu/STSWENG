@@ -14,14 +14,10 @@ export async function GET() {
         const num_of_active_customers = await Customer.find({ status: "Ongoing" }).countDocuments();
         const num_of_accomplished_services = await Customer.find({ status: "Completed" }).countDocuments();
         const num_reports_submitted = await Report.find({}).countDocuments();
-        console.log("Today's date:", today);
-
         const services_today = await Contract.find({ 
             start_date: { $lte: today },
             end_date: { $gte: today }
         });
-
-        console.log("Services found today:", services_today);
 
         const num_of_services_today = services_today.length;
 
