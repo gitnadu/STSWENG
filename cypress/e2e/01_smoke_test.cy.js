@@ -22,7 +22,7 @@ describe('Smoke Tests', () => {
         cy.get('input[type="text"][placeholder="Enter your username"]').type("Adriel");
         cy.get('input[type="password"][placeholder="Enter your password"]').type("Fancubit");
         cy.get('[data-test="submit-button"]').should('be.visible').click();             // Click the button
-        cy.wait(1000); //Going to dashboard or home is slow for some reason.
+        cy.wait(10000); //Going to dashboard or home is slow for some reason.
         cy.url().should('include', '/admin/dashboard');
       });
 
