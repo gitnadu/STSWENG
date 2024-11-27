@@ -2022,7 +2022,7 @@ const Page = () => {
         nameFilter ? `name=${nameFilter}` : "",
         typeFilter ? `type=${typeFilter}` : "",
         statusFilter ? `status=${statusFilter}` : "",
-        dateFilter ? `date=${dateFilter}` : ""
+        dateFilter ? `date=${formatDate(dateFilter)}` : ""
       ];
 
       filterParams = filterParams.filter(param => param !== "");
