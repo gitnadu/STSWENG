@@ -33,10 +33,8 @@ export async function GET(request) {
 
         await connectDB();
         const results = await Customer.find(query).exec();
-        console.log(name, type, status, date);
-        console.log(results)
 
-        return Response.json({ results }, { status: 200 });
+        return Response.json({ results, status: 200 });
     } catch (error) {
         console.error("Error:", error);
         return Response.json({ message: "An error occurred while getting a summary." }, { status: 500 });
@@ -46,7 +44,7 @@ export async function GET(request) {
 export async function POST(request) {
     try {
         const {
-            name,
+            client_name,
             contact_person,
             email_address,
             address,
@@ -59,7 +57,7 @@ export async function POST(request) {
         const currentDate = new Date()
     
         const new_customer = new Customer({
-            name: name,
+            name: client_name,
             type: type,
             date: currentDate,
             contact_person: contact_person,
@@ -76,15 +74,60 @@ export async function POST(request) {
 
         return Response.json({ 
             message: "Creating a new customer instance successful.", 
-        }, {
             status: 201 
         });
     } catch (error) {
         console.log("Error: ", error);
         return Response.json({ 
             message: "Error occured while creating a new customer instance.", 
-        }, {
             status: 500 
         });
     }
+}
+
+export async function PUT(request) {
+    try {
+        const {
+            customer_id,
+            name,
+            contact_person,
+            email_address,
+            address,
+            services,
+            status,
+            type,
+            contact_number
+        } = await request.json();
+
+        if (!customer_id) {
+            return Response.json({ message: "Customer ID is required for update." }, { status: 400 });
+        }
+        await connectDB();
+        const updatedCustomer = await Customer.findByIdAndUpdate(
+            customer_id,
+            {
+                name: name,
+                contact_person: contact_person,
+                email_address: email_address,
+                address: address,
+                services: services,
+                status: status,
+                type: type,
+                contact_number: contact_number
+            },
+            { new: true } 
+        );
+        if (!updatedCustomer) {
+            return Response.json({ message: "Customer not found." }, { status: 404 });
+        }
+        console.log("Customer updated successfully.");
+        return Response.json({ message: "Customer updated successfully.", updatedCustomer, status: 200 });
+    } catch (error) {
+        console.error("Error:", error);
+        return Response.json({ message: "An error occurred while updating the customer.", status: 500 });
+    }
+}
+
+export async function DELETE() {
+
 }

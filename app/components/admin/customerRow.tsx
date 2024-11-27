@@ -1,9 +1,19 @@
 import Image from 'next/image';
 import React from 'react';
 
-const ClientRow = ({ id, name, type, status, createdAt, onClickEdit, onClickDelete }) => {
+const ClientRow = ({ name, type, status, createdAt }) => {
+  const handleButtonClick = (e, action) => {
+    e.stopPropagation(); 
+
+    if (action === 'edit') {
+      alert('Edit button clicked');
+    } else if (action === 'delete') {
+      alert('Delete button clicked');
+    }
+  };
+
   return (
-    <div data-id={id} className='flex items-center justify-between bg-dark-green-C rounded-lg shadow-md p-4 mt-6 hover:bg-opacity-90'>
+    <div className='flex items-center justify-between bg-dark-green-C rounded-lg shadow-md p-4 mt-6 hover:bg-opacity-90'>
       <div className='h-24 font-bold grid grid-cols-5 text-white text-xl w-full'>
         <div className='flex justify-center items-center italic'>{name}</div>
         <div className='flex justify-center items-center'>{type}</div>
@@ -11,9 +21,7 @@ const ClientRow = ({ id, name, type, status, createdAt, onClickEdit, onClickDele
         <div className='flex justify-center items-center '>{createdAt}</div>
         <div className='flex space-x-2'>
           <div className='flex gap-5 items-center'>
-            <button 
-            className='btn border-none hover:bg-yellow-700 w-24 bg-light-green h-10 flex items-center justify-center rounded'
-            onClick={onClickEdit}>
+            <button onClick={(e) => handleButtonClick(e, 'edit')} className='btn border-none hover:bg-yellow-700 w-24 bg-light-green h-10 flex items-center justify-center rounded z-10'>
             <Image
                 className='mr-2'
                 src="/Customer/EditIcon.png"
@@ -22,9 +30,7 @@ const ClientRow = ({ id, name, type, status, createdAt, onClickEdit, onClickDele
                 height={24}
               />
             </button>
-            <button 
-            className='btn border-none hover:bg-yellow-700  w-24 bg-light-green h-10 flex items-center justify-center rounded'
-            onClick={onClickDelete}>
+            <button onClick={(e) => handleButtonClick(e, 'delete')} className='btn border-none hover:bg-yellow-700  w-24 bg-light-green h-10 flex items-center justify-center rounded z-10'>
               <Image
                   className='mr-2'
                   src="/Customer/DeleteIcon.png"
