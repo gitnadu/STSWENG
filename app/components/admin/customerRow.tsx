@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import React from 'react';
 
-const ClientRow = ({ name, type, status, createdAt }) => {
+const ClientRow = ({ id, name, type, status, createdAt, onClickEdit, onClickDelete }) => {
   const handleButtonClick = (e, action) => {
     e.stopPropagation(); 
 
     if (action === 'edit') {
-      alert('Edit button clicked');
+      onClickEdit()
     } else if (action === 'delete') {
-      alert('Delete button clicked');
+      onClickDelete()
     }
   };
 

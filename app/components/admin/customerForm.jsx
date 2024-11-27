@@ -8,7 +8,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     const serviceOptions = ["Hygenic Pest Control", "Termite Control", "Rodent Control"];
 
     const [formData, setFormData] = useState({
-        client_name: "",
+        name: "",
         contact_person: "",
         email_address: "",
         address: "",
@@ -19,7 +19,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
     });
 
     const [errors, setErrors] = useState({
-        client_name: "",
+        name: "",
         contact_person: "",
         email_address: "",
         address: "",
@@ -75,7 +75,7 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
 
     const handleSubmit = async () => {
         const new_errors = {
-            client_name: "",
+            name: "",
             contact_person: "",
             email_address: "",
             address: "",
@@ -176,9 +176,9 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
                 </div>
                 <div className="flex flex-row justify-center px-4">
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 1 */}
-                        <TextInput name="client_name" label="Client Name" onChange={handleChange}
-                        value={formData.client_name}
-                        error_msg={errors.client_name} />
+                        <TextInput name="name" label="Client Name" onChange={handleChange}
+                        value={formData.name}
+                        error_msg={errors.name} />
                         <TextInput name="contact_person" label="Contact Person" onChange={handleChange}
                         value={formData.contact_person}
                         error_msg={errors.contact_person} />
@@ -206,7 +206,6 @@ export default function CustomerForm({ onOpenModel, onFetchCustomerData, custome
                         </div>
                         <div className="flex flex-col flex-end justify-end">
                             <SubmitButton onClick={() => {
-                                printInputs();
                                 handleSubmit();
                             }} 
                             isForEdit={isForEdit}/>

@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import ClientRow from '@/app/components/admin/customerRow';
 import CustomerForm from '@/app/components/admin/customerForm';
+import DeleteCustomerModal from '@/app/components/admin/DeleteCustomerModal'
 import Image from 'next/image';
 import moment from 'moment';
 
@@ -2044,11 +2045,17 @@ const Page = () => {
     setLoading(true)
   };
 
+  const [selectedCustomerID, setSelectedCustomerID] = useState("");
+  const [isFormForEdit, setIsFormForEdit] = useState(false);
+  const [customerModalOpen,       setCustomerModalOpen] =       useState(false);
+  const [deleteCustomerModalOpen, setDeleteCustomerModalOpen] = useState(false);
 
 
   return (
     <div className='mx-16 mt-10 pb-6'>
       {addModalOpen && <CustomerForm onOpenModel={setAddModalOpen} onFetchCustomerData={setFetching} />}
+      {customerModalOpen && <CustomerForm onOpenModel={setCustomerModalOpen} customerID={selectedCustomerID} onFetchCustomerData={setFetching} isForEdit={isFormForEdit}/>}
+      {deleteCustomerModalOpen && <DeleteCustomerModal customerID={selectedCustomerID} onOpenModel={setDeleteCustomerModalOpen} onFetchCustomerData={setFetching} />}
       <div className="w-screen">
         <DetailModal 
           isOpen={detailModalOpen}
@@ -2122,7 +2129,22 @@ const Page = () => {
       <hr className='bg-normal-green h-[2px] w-full mt-3'></hr>
       {customers.map((customer) => (
         <div key={customer._id} className="cursor-pointer" onClick={() => handleRowClick(customer._id)}>
-          <ClientRow name={customer.name} type={customer.type} status={customer.status} createdAt={formatDate(customer.date)} />
+          <ClientRow
+                  id={customer._id}
+                  name={customer.name}
+                  type={customer.type}
+                  status={customer.status}
+                  createdAt={formatDate(customer.date)}
+                  onClickEdit={() => {
+                    setSelectedCustomerID(customer._id);
+                    setCustomerModalOpen(true);
+                    setIsFormForEdit(true);
+                  }}
+                  onClickDelete={() => {
+                    setSelectedCustomerID(customer._id);
+                    setDeleteCustomerModalOpen(true);
+                  }}
+                />
         </div>
       ))}
       <div className='flex justify-end'>

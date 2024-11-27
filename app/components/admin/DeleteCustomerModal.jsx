@@ -10,11 +10,11 @@ export default function DeleteCustomerModal({customerID, onOpenModel, onFetchCus
                     "Content-Type": "application/json",
                 },
             });
-            
+
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
-            
+
             console.log(`Customer with id: ${customerID} deleted.`)
             onFetchCustomerData(true);
         } catch (error) {
