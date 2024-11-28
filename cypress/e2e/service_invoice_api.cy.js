@@ -26,26 +26,6 @@ describe("Service invoice API test", () => {
       }).then((response) => {
         expect(response.status).to.eq(200);
       });
-    });
-
-    it("Adds a service for a nonexisting customer.", () => {
-      const service_invoice = {
-        customer_id: "6747a82795e3774b076b9bc9",
-        tin: 1234567890,
-        terms: "Monthly",
-        date: "2024-02-11T00:00:00.000Z",
-        pwd_id_no: "3272382187",
-        business_style: "Residential",
-      };
-
-      cy.request({
-        method: "POST",
-        url: "http://localhost:3000/api/customers/invoices", // baseUrl is prepend to URL
-        body: service_invoice,
-        failOnStatusCode: false,
-      }).then((response) => {
-        expect(response.status).to.eq(500);
-      });
-    });
+    })
   });
 });

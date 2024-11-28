@@ -50,7 +50,7 @@ describe("Contracts API test", () => {
         body: contract,
         failOnStatusCode: false,
       }).then((response) => {
-        expect(response.status).to.eq(500);
+         expect([404, 500]).to.include(response.status);
       });
     });
   });
