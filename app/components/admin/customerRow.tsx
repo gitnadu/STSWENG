@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-const ClientRow = ({ id, name, type, status, createdAt, onClickEdit, onClickDelete }) => {
+const ClientRow = ({ name, type, status, createdAt, onClickEdit, onClickDelete }) => {
   const handleButtonClick = (e, action) => {
     e.stopPropagation(); 
 
