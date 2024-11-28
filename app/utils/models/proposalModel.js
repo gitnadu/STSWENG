@@ -6,7 +6,11 @@ const proposalSchema = new Schema({
     ref: "Customer",
     required: true,
   },
-  product: { type: String, required: true, enum: ["Exterra Baiting System"] },
+  product: {
+    type: String,
+    required: true,
+    enum: ["Exterra Baiting System", "Product 2", "Product 3"],
+  },
   quotation_total: { type: Number, required: true },
   frequency: { type: String, required: true },
   file: { type: String, required: false, default: null }, //type not specified for now.

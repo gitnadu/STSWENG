@@ -1,12 +1,13 @@
 import { Schema, model, models } from "mongoose";
 
 const serviceAckModel = new Schema({
-  service_id: {
+  customer_id: {
     type: Schema.Types.ObjectId,
-    ref: "Service",
+    ref: "Customer",
     required: true,
   },
-  file: { required: false, default: null }, //type not specified for now.
+  date: { type: Date, required: true },
+  file: { type: String, required: false },
   service_areas: {
     type: [Schema.Types.ObjectId],
     ref: "ServiceArea",
@@ -14,6 +15,7 @@ const serviceAckModel = new Schema({
 });
 
 const ServiceAcknowledgment =
-  models.ServiceInvoice ||
+  models.ServiceAcknowledgment ||
   model("ServiceAcknowledgment", serviceAckModel, "service_acknowledgments");
+
 export default ServiceAcknowledgment;

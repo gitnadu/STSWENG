@@ -1,13 +1,14 @@
 'use client'
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useSession } from 'next-auth/react'
-  
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+
 export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { status } = useSession();
 
@@ -19,19 +20,26 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); 
+    setError(''); 
+    
     try {
       const res = await signIn("credentials", {
         username,
         password,
         redirect: false,
       });
+
       if (res.error) {
         setError("Wrong Username or Password");
+        setLoading(false); 
         return;
       }
+
       router.replace("admin/dashboard");
     } catch (error) {
       console.log(error);
+      setLoading(false); 
     }
   };
 
@@ -45,6 +53,7 @@ export default function Home() {
           <div className="mb-8">
             <label className="block mb-2 text-white">Username</label>
             <input
+              data-test="username"
               onChange={(e) => setUsername(e.target.value)}
               type="text"
               className={`w-full p-2 text-white bg-transparent placeholder-gray-300 rounded outline-none focus:ring-2 border-[1px] h-[56px] ${error ? 'border-red-500' : 'border-white'}`}
@@ -54,6 +63,7 @@ export default function Home() {
           <div className="mb-6">
             <label className="block mb-2 text-white">Password</label>
             <input
+              data-test="password"
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               className={`w-full p-2 text-white placeholder-gray-300 bg-transparent rounded outline-none focus:ring-2 border-[1px] h-[56px] ${error ? 'border-red-500' : 'border-white'}`}
@@ -61,18 +71,28 @@ export default function Home() {
             />
           </div>
           {error && (
-            <div className="mb-4 text-red-500 bg-red-100 p-3 rounded-md w-max justify-self-center">
-              {error}
+            <div data-test="error-pop-up" className="mb-4 text-red-500 bg-red-100 p-3 rounded-md w-max justify-self-center">
+              {error }
             </div>
           )}
+
           <button
             data-test="submit-button"
             type="submit"
-            className="w-[169px] h-[34px] text-center text-white font-bold bg-light-green text-xl rounded-xl hover:bg-[#c4b25a] transition absolute bottom-28 right-0">
+            disabled={loading} 
+            className={`w-[169px] h-[34px] text-center text-white font-bold bg-light-green text-xl rounded-xl hover:bg-[#c4b25a] transition absolute bottom-28 right-0 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}>
             LOG IN
           </button>
         </form>
       </div>
+
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg">
+            <p className="text-center text-lg font-bold">Logging in...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
