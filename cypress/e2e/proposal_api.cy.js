@@ -32,7 +32,7 @@ describe("Proposals API test", () => {
       });
     });
 
-    it("Adds a contract for a nonexisting customer.", () => {
+    it("Adds a proposal for a nonexisting customer.", () => {
       const proposal = {
         customer_id: "64b8d2a7f4c3e35b6a8f97b1",
         product: "Product 2",
@@ -65,7 +65,7 @@ describe("Proposals API test", () => {
 
       cy.request({
         method: "POST",
-        url: `http://localhost:3000/api/customers/contracts`, // baseUrl is prepend to URL
+        url: `http://localhost:3000/api/customers/proposals`, // baseUrl is prepend to URL
         failOnStatusCode: false,
         body: proposal,
       }).then((response) => {
@@ -74,8 +74,8 @@ describe("Proposals API test", () => {
     });
   });
 
-  context("Deletes a contract", () => {
-    it("Deletes a contract for an existing customer.", () => {
+  context("Deletes a proposal", () => {
+    it("Deletes a proposal for an existing customer.", () => {
       const customer_id = "673c31c5931e94eac95b34bb";
 
       cy.request({
