@@ -2,7 +2,7 @@ describe("Serviced areas API test", () => {
   it("Gets a list of articles", () => {
     cy.request(
       "GET",
-      "http://localhost:3000/api/customers/acknowledgements/servicedAreas/67480b22bdf9203b43c8c784"
+      "http://localhost:3000/api/customers/acknowledgements/servicedAreas/67483a02f05865b106b78e73"
     ).then((response) => {
       expect([404, 500, 405, 200, 201]).to.include(response.status);
     });
