@@ -37,7 +37,7 @@ describe("Articles API test", () => {
     it("Adds a service for an nonexisting service invoice.", () => {
       const invoice = {
         business_style: "SERVICE INVOICE",
-        customer_id: "67372cde8115ac6e61f3e64812121",
+        customer_id: "6747a82795e3774b076b9bc9",
         date: "2024-02-11",
         pwd_id_no: "112121211",
         terms: "11",

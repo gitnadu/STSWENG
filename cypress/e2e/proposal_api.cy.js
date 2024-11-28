@@ -29,7 +29,7 @@ describe("Proposal API test", () => {
 
     it("Adds a proposal for a nonexisting customer.", () => {
       const proposal = {
-        "customer_id": "67372cde811115ac6e61f3e648",
+        "customer_id": "6747a82795e3774b076b9bc9",
         "product": "Product 3",
         "quotation_total": 1,
         "frequency": "112121212121",

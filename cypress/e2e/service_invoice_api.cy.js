@@ -30,7 +30,7 @@ describe("Service invoice API test", () => {
 
     it("Adds a service for a nonexisting customer.", () => {
       const service_invoice = {
-        customer_id: "67372cde8115ac6e61f121123e647",
+        customer_id: "6747a82795e3774b076b9bc9",
         tin: 1234567890,
         terms: "Monthly",
         date: "2024-02-11T00:00:00.000Z",

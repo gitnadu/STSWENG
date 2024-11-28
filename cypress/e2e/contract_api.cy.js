@@ -36,7 +36,7 @@ describe("Contracts API test", () => {
       const end_date_obj = new Date("2023-09-07");
 
       const contract = {
-        customer_id: "64b8d2a7f4c3e35b6a8f197b1",
+        customer_id: "6747a82795e3774b076b9bc9",
         services: ["Hygenic Pest Control", "Termite Control"],
         start_date: start_date_obj,
         end_date: end_date_obj,

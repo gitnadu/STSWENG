@@ -26,7 +26,7 @@ describe("Service acknowledgment API test", () => {
 
     it("Adds a service for a nonexisting customer.", () => {
       const service_acknowledgment = {
-        service_id: "67480b22bdf9203b43c8c7814",
+        service_id: "6747a82795e3774b076b9bc9",
       };
 
       cy.request({
