@@ -53,6 +53,7 @@ export default function Home() {
           <div className="mb-8">
             <label className="block mb-2 text-white">Username</label>
             <input
+              data-test="username"
               onChange={(e) => setUsername(e.target.value)}
               type="text"
               className={`w-full p-2 text-white bg-transparent placeholder-gray-300 rounded outline-none focus:ring-2 border-[1px] h-[56px] ${error ? 'border-red-500' : 'border-white'}`}
@@ -62,6 +63,7 @@ export default function Home() {
           <div className="mb-6">
             <label className="block mb-2 text-white">Password</label>
             <input
+              data-test="password"
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               className={`w-full p-2 text-white placeholder-gray-300 bg-transparent rounded outline-none focus:ring-2 border-[1px] h-[56px] ${error ? 'border-red-500' : 'border-white'}`}
@@ -69,8 +71,8 @@ export default function Home() {
             />
           </div>
           {error && (
-            <div className="mb-4 text-red-500 bg-red-100 p-3 rounded-md w-max justify-self-center">
-              {error}
+            <div data-test="error-pop-up" className="mb-4 text-red-500 bg-red-100 p-3 rounded-md w-max justify-self-center">
+              {error }
             </div>
           )}
 

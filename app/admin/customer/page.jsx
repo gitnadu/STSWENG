@@ -267,7 +267,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
     }
   };
   
-  const isTimeInEarlierThanOrEqualToTimeOut = (timeIn, timeOut) => {
+  const isTimeInEarlierThanOrEqualToTimeOut = (area) => {
+    const timeIn = extractTimeForInput(area.time_in);
+    const timeOut = extractTimeForInput(area.time_out);
     const [hoursIn, minutesIn] = timeIn.split(':').map(Number);
     const [hoursOut, minutesOut] = timeOut.split(':').map(Number);
     return hoursIn < hoursOut || (hoursIn === hoursOut && minutesIn <= minutesOut);
@@ -470,7 +472,6 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
 
   const isServiceInvoiceFormValid = (invoiceFields) => {
     const tinRegex = /^\d{9,12}$/;
-
     return isServiceInvoiceFormFilled(invoiceFields)
     && isDateEarlierThanOrEqualToCurrentDate(invoiceFields.date)
     && followsRegex(invoiceFields.tin, tinRegex);
@@ -716,7 +717,6 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       const acknowledgmentDataResponse = await acknowledgmentResponse.json();
       let acknowledgmentId = null;
       let isNewAcknowledgment = true;
-
       if (acknowledgmentResponse.ok && acknowledgmentDataResponse.acknowledgments && acknowledgmentDataResponse.acknowledgments.length > 0) {
         const currentAcknowledgment = acknowledgmentDataResponse.acknowledgments[0];
         acknowledgmentId = currentAcknowledgment._id;
@@ -743,7 +743,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
       }
   
       if (!isNewAcknowledgment) {
-        await fetch(`/api/customers/acknowledgements/servicedAreas/${acknowledgementId}`, {
+        await fetch(`/api/customers/acknowledgements/servicedAreas/${acknowledgmentId}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -1163,7 +1163,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
                         onChange={(e) => handleInputChange(e, 'proposalForm')}
                         className="block w-full rounded-md border-0 py-1.5 px-4 mb-4 ring-1 ring-inset ring-light-green focus:ring-2"
                         >
-                        <option key={0} disabled selected={!proposalFields.product} value>Select product</option>
+                        <option key={0} disabled selected={!proposalFields.product} value="">Select product</option>
                         {productOptionList}
                       </select>
                     ) : (
@@ -1432,7 +1432,7 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-md font-semibold text-dark-green pb-2">TIN</label>
+          <label className="block text-md font-semibold text-dark-green pb-2">TIN (9-12 digits)</label>
           {isEditingInvoice ? (
             <input
               type="text"
@@ -1925,9 +1925,9 @@ const DetailModal = ({ isOpen, onClose, customerData, refetchTrigger, loading, s
         {index === acknowledgementFields.servicedAreas.length - 1 && (
           <button
             onClick={handleAddServicedArea}
-            disabled={isServicedAreaEmpty(area) ||  !isTimeInEarlierThanOrEqualToTimeOut(area.time_in, area.time_out)}
+            disabled={isServicedAreaEmpty(area) ||  !isTimeInEarlierThanOrEqualToTimeOut(area)}
             className={`bg-light-green text-white font-semibold py-1 px-4 rounded ${
-              isServicedAreaEmpty(area) ||  !isTimeInEarlierThanOrEqualToTimeOut(area.time_in, area.time_out) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-dark-green-C'
+              isServicedAreaEmpty(area) ||  !isTimeInEarlierThanOrEqualToTimeOut(area)? 'opacity-50 cursor-not-allowed' : 'hover:bg-dark-green-C'
             }`}
           >
             ADD

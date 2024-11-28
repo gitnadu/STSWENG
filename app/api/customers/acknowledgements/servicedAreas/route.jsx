@@ -4,15 +4,17 @@ import ServiceAcknowledgment from "../../../../utils/models/serviceAcknowledgmen
 
 export async function POST(request) {
   await connectDB();
-
+  
   try {
     const { sa_id, area_name, time_in, time_out, acknowledged_by, remarks } = await request.json();
+
     if (!sa_id || !area_name || !time_in || !time_out || !acknowledged_by || !remarks) {
       return new Response(
         JSON.stringify({ message: "All required fields must be provided." }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
+ 
     const newServicedArea = new ServicedArea({
       sa_id,
       area_name,
@@ -21,6 +23,7 @@ export async function POST(request) {
       acknowledged_by,
       remarks
     });
+    
     const savedServicedArea = await newServicedArea.save();
     const acknowledgment = await ServiceAcknowledgment.findOne({ _id: sa_id });
     if (!acknowledgment) {

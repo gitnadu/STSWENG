@@ -2,46 +2,28 @@ describe("Serviced areas API test", () => {
   it("Gets a list of articles", () => {
     cy.request(
       "GET",
-      "http://localhost:3000/api/services/acknowledgments/serviced_areas"
+      "http://localhost:3000/api/customers/acknowledgements/servicedAreas/67480b22bdf9203b43c8c784"
     ).then((response) => {
       expect(response.status).to.eq(200);
-      expect(response.body).to.have.property("results");
+      expect(response.body).to.have.property("servicedAreas");
     });
   });
 
   context("Add serviced areas", () => {
     it("Adds serviced areas for an existing service acknowledgment.", () => {
-      const sa_id = "6739b8c1cf1789416418bc57";
-      const serviced_areas = [
-        {
-          area_name: "area 1",
-          time_in: new Date(),
-          time_out: new Date(),
-          acknowledged_by: "person 1",
-          remarks: "Hello world.",
-        },
-        {
-          area_name: "area 2",
-          time_in: new Date(),
-          time_out: new Date(),
-          acknowledged_by: "person 2",
-          remarks: "",
-        },
-        {
-          area_name: "area 3",
-          time_in: new Date(),
-          time_out: new Date(),
-          acknowledged_by: "person 3",
-          remarks: "STSWENG group 9",
-        },
-      ];
+
+      const sa_id="67480b22bdf9203b43c8c784"
+      const area_name= "Paranaque"
+      const time_in= "2024-11-28T03:02:00.000Z"
+      const time_out= "2024-11-28T04:01:00.000Z"
+      const acknowledged_by= "Adriel Fancubit"
+      const remarks= "Rads"
 
       cy.request({
         method: "POST",
-        url: "http://localhost:3000/api/services/acknowledgments/serviced_areas", // baseUrl is prepend to URL
+        url: "http://localhost:3000/api/customers/acknowledgements/servicedAreas", // baseUrl is prepend to URL
         body: {
-          sa_id,
-          serviced_areas,
+          sa_id, area_name, time_in, time_out, acknowledged_by, remarks
         },
       }).then((response) => {
         expect(response.status).to.eq(201);
@@ -49,30 +31,18 @@ describe("Serviced areas API test", () => {
     });
 
     it("Adds a service for an nonexisting service invoice.", () => {
-      const sa_id = "66fe3c7888c42f8278a5ed5f";
-      const serviced_areas = [
-        {
-          area_name: "area 4",
-          time_in: new Date(),
-          time_out: new Date(),
-          acknowledged_by: "person 4",
-          remarks: "Adriel Fancubit",
-        },
-        {
-          area_name: "area 5",
-          time_in: new Date(),
-          time_out: new Date(),
-          acknowledged_by: "person 5",
-          remarks: "Airelle Maagma",
-        },
-      ];
+      const sa_id = "67480b22bdf9203b4121213c8c784112";
+      const area_name= "Paranaque"
+      const time_in= "2024-11-28T03:02:00.000Z"
+      const time_out= "2024-11-28T04:01:00.000Z"
+      const acknowledged_by= "Adriel Fancubit"
+      const remarks= "Rads"
 
       cy.request({
         method: "POST",
-        url: "http://localhost:3000/api/services/acknowledgments/serviced_areas", // baseUrl is prepend to URL
+        url: "http://localhost:3000/api/customers/acknowledgements/servicedAreas", // baseUrl is prepend to URL
         body: {
-          sa_id,
-          serviced_areas,
+          sa_id, area_name, time_in, time_out, acknowledged_by, remarks
         },
         failOnStatusCode: false,
       }).then((response) => {
