@@ -1,16 +1,19 @@
+import Link from "next/link";
+
 export default async function Dashboard() {
   const data = await fetch(`${process.env.PUBLIC_API_URL}/api/summary`, {
     method: 'GET',
     cache: 'no-store',
   });
 
-  const { 
-    num_of_total_customers,
-    num_of_active_customers,
-    num_of_accomplished_services,
-    num_reports_submitted,
-    num_of_services_today
-  }  = await data.json();
+    const { 
+      num_of_total_customers,
+      num_of_active_customers,
+      num_of_accomplished_services,
+      num_reports_submitted,
+      num_of_services_today
+    }  = await data.json();
+
 
   return (
     <div className="bg-light-green-A h-[calc(100vh-98px)] flex flex-col items-center justify-center w-screen gap-y-24">
@@ -64,9 +67,9 @@ export default async function Dashboard() {
           </div>
 
           <div className="flex justify-end">
-            <button type="button" className="text-white bg-dark-green-B shadow-lg 
+            <Link href="/admin/customer" type="button" className="text-white bg-dark-green-B shadow-lg 
             ring-1 ring-inset ring-light-green w-1/4
-            focus:ring-2 font-medium rounded-lg text-sm px-5 py-2.5">VIEW ALL</button>
+            focus:ring-2 font-medium rounded-lg text-sm px-5 py-2.5">VIEW ALL</Link>
           </div>
 
         </div>

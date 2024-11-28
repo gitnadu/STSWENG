@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextInput, CheckboxInput, DropDownInput, SubmitButton } from "./formComponents"
 
-export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
+export default function CustomerForm({ onOpenModel, onFetchCustomerData, customerID, isForEdit }) {
     const statusOptions = ["Completed", "Ongoing", "Terminated", "Pending"];
     const typeOptions = ["Industrial", "Residential", "Commercial", "Service", "Retail", "Other"];
     const serviceOptions = ["Hygenic Pest Control", "Termite Control", "Rodent Control"];
 
-    //States store inputs.
     const [formData, setFormData] = useState({
-        client_name: "",
+        name: "",
         contact_person: "",
         email_address: "",
         address: "",
@@ -20,7 +19,7 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
     });
 
     const [errors, setErrors] = useState({
-        client_name: "",
+        name: "",
         contact_person: "",
         email_address: "",
         address: "",
@@ -30,27 +29,20 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
         contact_number: "",
     })
 
-    const printInputs = () => {
-        console.log(formData.client_name);
-        console.log(formData.contact_person);
-        console.log(formData.email_address);
-        console.log(formData.address);
-        console.log(formData.services);
-        console.log(formData.status);
-        console.log(formData.type);
-        console.log(formData.contact_number);
-    };
-
-    const printErrorMessages = () => {
-        console.log(errors.client_name);
-        console.log(errors.contact_person);
-        console.log(errors.email_address);
-        console.log(errors.address);
-        console.log(errors.services);
-        console.log(errors.status);
-        console.log(errors.type);
-        console.log(errors.contact_number);
-    }
+    useEffect(() => {
+        if (isForEdit) {    
+          fetch(`/api/customers/${customerID}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const customer = data.customer;
+            setFormData(prevState => ({
+                ...prevState,
+                ...customer
+            }));
+          })
+          .catch((error) => console.error('Error while fetching a customer:', error));
+        } 
+    }, [isForEdit, customerID]);
 
     const handleChange = (e) => {
         e.stopPropagation();
@@ -76,14 +68,14 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
         //console.log(new_services);
 
         setFormData({
-           ...formData,
-           services: services
+            ...formData,
+            services: services
         });
     };
 
     const handleSubmit = async () => {
         const new_errors = {
-            client_name: "",
+            name: "",
             contact_person: "",
             email_address: "",
             address: "",
@@ -105,7 +97,7 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
         const telephone_regex = /^(09|\+639)\d{9}$|^(02|\+6302)\d{8}$/;
         if (!telephone_regex.test(formData.contact_number)) {
             console.log(`contact_number: Please follow the following formats.`)
-            new_errors.contact_number = 
+            new_errors.contact_number =
             `Please follow one of the following formats:
             09XXXXXXXXX,
             +639XXXXXXXXX,
@@ -116,7 +108,7 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
 
         //Handles requirements:
         for (let data in formData) {
-            if (data !== "services" && formData[data] === "")  {
+            if (data !== "services" && formData[data] === "") {
                 console.log(`${data}: Please enter this field.`);
                 new_errors[data] = "Please enter this field.";
                 valid = false;
@@ -134,20 +126,34 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
 
         if (valid) {
             try {
-                console.log("Submitting customer form.");
-                
-                const response = await fetch(`/api/customers`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                      },
-                    body: JSON.stringify(formData)
-                });
+                let response = null;
+
+                if (isForEdit) { //For edit.
+                    console.log("Submitting customer form for edit.");
+
+                    response = await fetch(`/api/customers/${customerID}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                } else { //For creation.
+                    console.log("Submitting customer form for creation.");
+
+                    response = await fetch(`/api/customers`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                }
 
                 if (!response.ok) {
                     throw new Error(`Response status: ${response.status}`);
                 }
-                
+
                 console.log("Submitting customer form successful.")
                 onOpenModel(false); //To change the state outside to disable the modal.
                 onFetchCustomerData(true);
@@ -165,36 +171,44 @@ export default function CustomerForm({onOpenModel, onFetchCustomerData}) {
                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 -960 960 960"
                     className="w-6 h-6 text-dark-green-A fill-current mt-[0.3%]"
                     onClick={() => onOpenModel(false)}>
-                        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                        <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
                     </svg>
                 </div>
                 <div className="flex flex-row justify-center px-4">
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 1 */}
-                        <TextInput name="client_name" label="Client Name" onChange={handleChange} 
-                        error_msg={errors.client_name} />
-                        <TextInput name="contact_person" label="Contact Person" onChange={handleChange} 
+                        <TextInput name="name" label="Client Name" onChange={handleChange}
+                        value={formData.name}
+                        error_msg={errors.name} />
+                        <TextInput name="contact_person" label="Contact Person" onChange={handleChange}
+                        value={formData.contact_person}
                         error_msg={errors.contact_person} />
-                        <TextInput name="email_address" label="Email Address" onChange={handleChange} 
+                        <TextInput name="email_address" label="Email Address" onChange={handleChange}
+                        value={formData.email_address}
                         error_msg={errors.email_address} />
-                        <TextInput name="address" label="Address" onChange={handleChange} 
+                        <TextInput name="address" label="Address" onChange={handleChange}
+                        value={formData.address}
                         error_msg={errors.address} />
                         <CheckboxInput name="services" label="Services" options={serviceOptions} onChange={handleCheckboxChange}
+                        values={formData.services}
                         error_msg={errors.services} />
                     </div>
                     <div className="mx-2 flex flex-col flex-shrink-0 basis-[50%]"> {/* column 2 */}
                         <div className="flex flex-col h-[90%]">
                             <DropDownInput name="status" label="Status" options={statusOptions} onChange={handleChange}
+                            value={formData.status}
                             error_msg={errors.status} />
-                            <DropDownInput name="type" label="Type" options={typeOptions} onChange={handleChange} 
+                            <DropDownInput name="type" label="Type" options={typeOptions} onChange={handleChange}
+                            value={formData.type}
                             error_msg={errors.type} />
-                            <TextInput name="contact_number" label="Contact Number" onChange={handleChange} 
+                            <TextInput name="contact_number" label="Contact Number" onChange={handleChange}
+                            value={formData.contact_number}
                             error_msg={errors.contact_number} /> {/* Regex: ^(09|\+639)\d{9}$|^(02|\+6302)\d{8}$*/}
                         </div>
                         <div className="flex flex-col flex-end justify-end">
                             <SubmitButton onClick={() => {
-                                printInputs();
                                 handleSubmit();
-                            }} />
+                            }} 
+                            isForEdit={isForEdit}/>
                         </div>
                     </div>
                 </div>
